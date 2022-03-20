@@ -17,13 +17,17 @@ public class CompanyRepository {
 	private JdbcTemplate jdbcTemplate;
 	
 	public List<CompanyModel> getAllCompanies(){
-		String sql = "select id, name, address, city, country, phone_No as phoneNo, email, website, status from t_companies";
+		String sql = "select id, name, address, city, country, phone_No as phoneNo, email, website, status from t_companies order by id desc";
 		List <CompanyModel> companies = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(CompanyModel.class));
 		return companies;
 	}
 	
 	public int addCompanies(CompanyModel companyModel){
-		String sql = "insert into t_companies(bank_id, name, address, city, state, country, phone_no, email, website, status) values('"+companyModel.getBankId()+"','"+companyModel.getName()+"', '"+companyModel.getAddress()+"','"+companyModel.getCity()+"', '"+companyModel.getState()+"','"+companyModel.getCountry()+"', '"+companyModel.getPhoneNo()+"', '"+companyModel.getEmail()+"','"+companyModel.getWebsite()+"', '"+companyModel.getStatus()+"')";
+		long bankId = companyModel.getBankId();
+		if (bankId == 0) {
+			bankId = 1;
+		}
+		String sql = "insert into t_companies(bank_id, name, address, city, state, country, phone_no, email, website, status) values("+bankId+",'"+companyModel.getName()+"', '"+companyModel.getAddress()+"','"+companyModel.getCity()+"', '"+companyModel.getState()+"','"+companyModel.getCountry()+"', '"+companyModel.getPhoneNo()+"', '"+companyModel.getEmail()+"','"+companyModel.getWebsite()+"', '"+companyModel.getStatus()+"')";
 		int result= jdbcTemplate.update(sql);
 		if(result==1) {
 			return 1;
