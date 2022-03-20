@@ -7,6 +7,7 @@ public class CompanyUnitModel {
 	private long businessUnitId;
 	private String businessUnitName;
 	private long parentId;
+	private String parentName;
 	private String name;
 	private String shortName;
 	private String address;
@@ -21,14 +22,15 @@ public class CompanyUnitModel {
 	private String approvalAuthority;
 	private String headedBy;
 	private String secondMan;
+	private int status;
 	public CompanyUnitModel() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	public CompanyUnitModel(long id, long companyId, String companyName, long businessUnitId, String businessUnitName,
-			long parentId, String name, String shortName, String address, String city, String state, String postCode,
-			String country, String phoneNo, String email, String website, String reportTo, String approvalAuthority,
-			String headedBy, String secondMan) {
+			long parentId, String parentName, String name, String shortName, String address, String city, String state,
+			String postCode, String country, String phoneNo, String email, String website, String reportTo,
+			String approvalAuthority, String headedBy, String secondMan, int status) {
 		super();
 		this.id = id;
 		this.companyId = companyId;
@@ -36,6 +38,7 @@ public class CompanyUnitModel {
 		this.businessUnitId = businessUnitId;
 		this.businessUnitName = businessUnitName;
 		this.parentId = parentId;
+		this.parentName = parentName;
 		this.name = name;
 		this.shortName = shortName;
 		this.address = address;
@@ -50,6 +53,7 @@ public class CompanyUnitModel {
 		this.approvalAuthority = approvalAuthority;
 		this.headedBy = headedBy;
 		this.secondMan = secondMan;
+		this.status = status;
 	}
 	public long getId() {
 		return id;
@@ -86,6 +90,12 @@ public class CompanyUnitModel {
 	}
 	public void setParentId(long parentId) {
 		this.parentId = parentId;
+	}
+	public String getParentName() {
+		return parentName;
+	}
+	public void setParentName(String parentName) {
+		this.parentName = parentName;
 	}
 	public String getName() {
 		return name;
@@ -171,4 +181,11 @@ public class CompanyUnitModel {
 	public void setSecondMan(String secondMan) {
 		this.secondMan = secondMan;
 	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
+	}
+	
 }

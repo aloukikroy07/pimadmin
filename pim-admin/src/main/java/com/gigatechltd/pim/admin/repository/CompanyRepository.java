@@ -56,7 +56,16 @@ public class CompanyRepository {
 	}
 	
 	public List<CompanyUnitModel> getCompanyUnits(){
-		String sql = "select t0.id, t0.name, t1.name as companyName, t2.unit_name as unitName, t0.address, t0.country, t0.phone_number, to.email, to.website from t_company_units t0 inner join t_companies t1 on t0.company_id=t1.id inner join t_business_units t2 on t0.business_unit_id=t2.id";
+		String sql = "select t0.id, t0.name, t1.name as companyName, t2.unit_name as unitName, t0.parent_id,\r\n" + 
+				"(case\r\n" + 
+				"when t2.id>2\r\n" + 
+				"then (select t10.name from t_company_units t10 where t10.id=t0.parent_id)\r\n" + 
+				"else (select t10.unit_name from t_business_units t10 where t10.id=t0.COMPANY_ID)\r\n" + 
+				"end) as ParentName,\r\n" + 
+				"t0.address, t0.country, t0.phone_no, t0.email, t0.website, t0.status \r\n" + 
+				"from t_company_units t0 \r\n" + 
+				"inner join t_companies t1 on t1.id = t0.company_id\r\n" + 
+				"inner join t_business_units t2 on t2.id=t0.business_unit_id";
 		List <CompanyUnitModel> companyUnits = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(CompanyUnitModel.class));
 		return companyUnits;
 	}

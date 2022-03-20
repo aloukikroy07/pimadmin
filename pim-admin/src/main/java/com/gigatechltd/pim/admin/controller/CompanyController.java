@@ -7,6 +7,7 @@ import com.gigatechltd.pim.admin.model.BusinessUnitModel;
 /// Mobile: 01673260344
 
 import com.gigatechltd.pim.admin.model.CompanyModel;
+import com.gigatechltd.pim.admin.model.CompanyUnitModel;
 import com.gigatechltd.pim.admin.repository.CompanyRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,20 @@ public class CompanyController {
 		if(result==1) {
 			return "redirect:/company/business_unit";
 		}
-		return "";
+		else {
+			return "";
+		}		
+	}
+	
+	@GetMapping({"/company/unit"})
+	public String companyUnit(Model model, Model model1, CompanyUnitModel companyUnitModel){
+		model.addAttribute("companyUnits", companyRepository.getCompanyUnits());
+		model.addAttribute("companyUnitModel", companyUnitModel);
+		return "company/company_unit";
+	}
+	
+	@PostMapping({"/company/unit/add"})
+	public String addCompanyUnit(@ModelAttribute("CompanyUnitModel") CompanyUnitModel companyUnitModel){
+		return "redirect:/company/unit";
 	}
 }
