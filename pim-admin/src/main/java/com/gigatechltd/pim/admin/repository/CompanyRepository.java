@@ -66,4 +66,15 @@ public class CompanyRepository {
 		List <CompanyUnitModel> companyUnits = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(CompanyUnitModel.class));
 		return companyUnits;
 	}
+	
+	public int addBusinessUnits(BusinessUnitModel businessUnitModel){
+		String sql = "insert into t_business_units(company_id, unit_name, short_name, hierarchy, status, user_id) values('"+businessUnitModel.getCompanyId()+"','"+businessUnitModel.getUnitName()+"','"+businessUnitModel.getShortName()+"','"+businessUnitModel.getHierarchy()+"','"+businessUnitModel.getStatus()+"', 1)";
+		int result= jdbcTemplate.update(sql);
+		if(result==1) {
+			return 1;
+		}
+		else {
+			return 0;
+		}
+	}
 }

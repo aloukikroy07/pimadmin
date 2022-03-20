@@ -1,5 +1,7 @@
 package com.gigatechltd.pim.admin.controller;
 
+import com.gigatechltd.pim.admin.model.BusinessUnitModel;
+
 /// Created by taohid on 02 Mar, 2022
 /// Email: taohid32@gmail.com
 /// Mobile: 01673260344
@@ -41,4 +43,22 @@ public class CompanyController {
         	return "";
         }
     }
+	
+	@GetMapping({"/company/business_unit"})
+	public String businessUnit(Model model, Model model1, BusinessUnitModel businessUnitModel) {
+		model.addAttribute("businessUnits", companyRepository.getAllBusinessUnit());
+		model.addAttribute("businessUnitModel", businessUnitModel);
+		model1.addAttribute("companyList", companyRepository.companyDropdown());
+//		model1.addAttribute("companyModel", companyModel);
+		return "company/business_unit";
+	}
+	
+	@PostMapping({"/company/business_unit/add"})
+	public String addBusinessUnit(@ModelAttribute("BusinessUnitModel") BusinessUnitModel businessUnitModel){
+		int result = companyRepository.addBusinessUnits(businessUnitModel);
+		if(result==1) {
+			return "redirect:/company/business_unit";
+		}
+		return "";
+	}
 }
