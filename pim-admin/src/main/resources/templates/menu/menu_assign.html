@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html layout:decorator="layout" lang="en" xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Assign Menu to Role</title>
+</head>
+
+<body>
+
+<section layout:fragment="content">
+
+    <div class="pagetitle">
+        <h1>Assign Menu to Role</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/"><i class="bi bi-house-door"></i></a></li>
+                <li class="breadcrumb-item active">Role</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <div class="row">
+
+        <div class="col-lg-12 grid-margin stretch-card">
+
+            <div th:if="${message}" class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-octagon me-1"></i>
+                <a th:text="${message}"></a>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+
+                    <form class="row g-3 card-title" method="get" th:object="${filterModel}" th:action="'/menu/assign'">
+
+                        <div class="col-3">
+                            <div class="form-floating">
+                                <select class="form-select" id="floatingSelect" aria-label="State" th:field="*{role}"
+                                        onchange="form.submit()">
+
+                                    <option value="">All</option>
+                                    <option
+                                            th:each="role: ${roles}"
+                                            th:value="${role.id}"
+                                            th:text="${role.name}">
+                                    </option>
+                                </select>
+                                <label for="floatingSelect">Role</label>
+                            </div>
+                        </div>
+
+                        <div class="col-9 align-self-center">
+                            <div class="float-end">
+                                <button th:disabled="${enableAddButton == null || enableAddButton == false}"
+                                        class="btn btn-primary"
+                                        type="button"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#assignMenuModal">Assign New Menu
+                                </button>
+                            </div>
+                        </div>
+
+                    </form>
+
+                    <!-- Table with stripped rows -->
+                    <table class="table simple-table">
+                        <thead>
+                        <tr>
+                            <th>Menu</th>
+                            <th>Permissions</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="menuPermission: ${menuPermissionList}">
+                            <td th:text="${menuPermission.menuModel.name}"></td>
+                            <td class="d-flex flex-wrap">
+                                <div class="p-1">
+                                    <input class="form-check-input" type="checkbox" id="view"
+                                           th:checked="${menuPermission.isView == 1}" disabled>
+                                    <label class="form-check-label" for="view">View</label>
+                                </div>
+                                <div class="p-1">
+                                    <input class="form-check-input" type="checkbox" id="add"
+                                           th:checked="${menuPermission.isAdd == 1}" disabled>
+                                    <label class="form-check-label" for="add">Add</label>
+                                </div>
+                                <div class="p-1">
+                                    <input class="form-check-input" type="checkbox" id="edit"
+                                           th:checked="${menuPermission.isEdit == 1}" disabled>
+                                    <label class="form-check-label" for="edit">Edit</label>
+                                </div>
+                                <div class="p-1">
+                                    <input class="form-check-input" type="checkbox" id="delete"
+                                           th:checked="${menuPermission.isDelete == 1}" disabled>
+                                    <label class="form-check-label" for="delete">Delete</label>
+                                </div>
+                                <div class="p-1">
+                                    <input class="form-check-input" type="checkbox" id="print"
+                                           th:checked="${menuPermission.isPrint == 1}" disabled>
+                                    <label class="form-check-label" for="print">Print</label>
+                                </div>
+                            </td>
+                            <td th:text="${menuPermission.roleModel.name}"></td>
+                            <td th:switch="${menuPermission.status}">
+                                <span th:case="'0'" class="badge bg-warning">Inactive</span>
+                                <span th:case="'1'" class="badge bg-success">Active</span>
+                            </td>
+                            <td>
+                                <div class="filter">
+                                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+
+                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                        <li>
+                                            <a class="dropdown-item"
+                                               data-bs-toggle="modal"
+                                               th:data-bs-target="'#editMenuModal'+${menuPermission.id}">Edit
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item"
+                                               data-bs-toggle="modal"
+                                               th:data-bs-target="'#activateModal'+${menuPermission.id}"
+                                               th:text="${menuPermission.status == 1 ? 'Deactivate' : 'Activate'}">
+                                            </a>
+                                        </li>
+                                    </ul>
+
+                                    <!-- Activate / Deactivate Confirmation Dialog -->
+                                    <div class="modal fade" th:id="'activateModal'+${menuPermission.id}"
+                                         tabindex="-1">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Confirmation</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <a th:text="${'Are you sure to ' + (menuPermission.status == 1 ? 'Deactivate ' : 'Activate ') + menuPermission.menuModel.name + ' menu for ' + menuPermission.roleModel.name} + ' ?'"></a>
+                                                </div>
+                                                <div class="modal-footer">
+
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Close
+                                                    </button>
+
+                                                    <form method="POST"
+                                                          th:action="@{'/menu/permission/changeStatus'}">
+                                                        <input type="hidden" name="roleId" th:value="${menuPermission.roleId}"/>
+                                                        <input type="hidden" name="id" th:value="${menuPermission.id}"/>
+                                                        <input type="hidden" name="v"
+                                                               th:value="${menuPermission.status == 1 ? 0 : 1}"/>
+                                                        <button type="submit" class="btn btn-primary">Confirm</button>
+                                                    </form>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- End Basic Modal-->
+
+                                    <!-- Edit Modal -->
+                                    <div class="modal fade" th:id="'editMenuModal'+${menuPermission.id}" role="dialog"
+                                         tabindex="-1">
+                                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+                                             role="document">
+
+                                            <div class="modal-content">
+
+                                                <form method="post"
+                                                      th:object="${menuPermissionModel}"
+                                                      th:action="'/menu/permission/update/' +${menuPermission.id}">
+
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title"
+                                                            th:text="'Update ' + ${menuPermission.menuModel.name} + ' for ' + ${menuPermission.roleModel.name}"></h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                    </div>
+
+                                                    <div class="modal-body row g-3">
+
+                                                        <div class="col-12">
+                                                            <div class="form-floating">
+                                                                <select class="form-select" id="editRole" disabled
+                                                                        aria-label="State">
+                                                                    <option
+                                                                            th:text="${menuPermission.roleModel.name}">
+                                                                    </option>
+                                                                </select>
+                                                                <label for="editRole">Role</label>
+                                                                <input type="hidden" name="roleId"
+                                                                       th:value="${menuPermission.roleModel.id}"/>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-12">
+                                                            <div class="form-floating">
+                                                                <select class="form-select" id="editMenu" disabled
+                                                                        aria-label="State">
+                                                                    <option
+                                                                            th:text="${menuPermission.menuModel.name}">
+                                                                    </option>
+                                                                </select>
+                                                                <label for="editMenu">Menu</label>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-12">
+                                                            <div class="form-floating">
+                                                                <select class="form-select" id="editStatus"
+                                                                        aria-label="State" th:field="*{status}">
+                                                                    <option value="1">Active</option>
+                                                                    <option value="0">Inactive</option>
+                                                                </select>
+                                                                <label for="editStatus">Status</label>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-3">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                       id="editIsView"
+                                                                       name="isView"
+                                                                       th:value="${menuPermission.isView}"
+                                                                       th:checked="${menuPermission.isView == 1}"
+                                                                       onclick="this.value = (this.checked ? 1 : 0)">
+
+                                                                <label class="form-check-label"
+                                                                       for="editIsView">View</label>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-3">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                       id="editIsAdd"
+                                                                       name="isAdd"
+                                                                       th:value="${menuPermission.isAdd}"
+                                                                       th:checked="${menuPermission.isAdd == 1}"
+                                                                       onclick="this.value = (this.checked ? 1 : 0)">
+
+                                                                <label class="form-check-label"
+                                                                       for="editIsAdd">Add</label>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-3">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                       id="editIsEdit"
+                                                                       name="isEdit"
+                                                                       th:value="${menuPermission.isEdit}"
+                                                                       th:checked="${menuPermission.isEdit == 1}"
+                                                                       onclick="this.value = (this.checked ? 1 : 0)">
+
+                                                                <label class="form-check-label"
+                                                                       for="editIsEdit">Edit</label>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-3">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                       id="editIsDelete"
+                                                                       name="isDelete"
+                                                                       th:value="${menuPermission.isDelete}"
+                                                                       th:checked="${menuPermission.isDelete == 1}"
+                                                                       onclick="this.value = (this.checked ? 1 : 0)">
+
+                                                                <label class="form-check-label"
+                                                                       for="editIsDelete">Delete</label>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-3">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                       id="editIsPrint"
+                                                                       name="isPrint"
+                                                                       th:value="${menuPermission.isPrint}"
+                                                                       th:checked="${menuPermission.isPrint == 1}"
+                                                                       onclick="this.value = (this.checked ? 1 : 0)">
+
+                                                                <label class="form-check-label"
+                                                                       for="editIsPrint">Print</label>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="modal-footer">
+
+                                                        <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close
+                                                        </button>
+
+                                                        <button data-bs-dismiss="modal" type="submit"
+                                                                class="btn btn-primary">
+                                                            Submit
+                                                        </button>
+
+                                                    </div>
+
+                                                </form>
+                                            </div>
+
+
+                                        </div>
+
+                                    </div><!-- End Basic Modal-->
+
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <!-- End Table with stripped rows -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assign New Menu Modal Dialog -->
+    <div class="modal fade" id="assignMenuModal" role="dialog"
+         tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+
+            <div class="modal-content">
+
+                <form method="post"
+                      th:object="${menuPermissionModel}"
+                      th:action="@{/menu/permission/add}">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">Assign Menu</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body row g-3">
+                        <div class="col-12" hidden>
+                            <div class="form-floating">
+                                <select class="form-select" id="floatingSelect" aria-label="State" th:field="*{roleId}">
+                                    <option
+                                            th:each="role: ${roles}"
+                                            th:value="${role.id}"
+                                            th:text="${role.name}">
+                                    </option>
+                                </select>
+                                <label for="floatingSelect">Role</label>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <select class="form-select" id="floatingSelect" aria-label="State" th:field="*{menuId}">
+                                    <option
+                                            th:each="menu: ${menus}"
+                                            th:value="${menu.id}"
+                                            th:text="${menu.name}">
+                                    </option>
+                                </select>
+                                <label for="floatingSelect">Menu</label>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <select class="form-select" id="floatingSelect" aria-label="State" th:field="*{status}">
+                                    <option value="1">Active</option>
+                                    <option value="0">Inactive</option>
+                                </select>
+                                <label for="floatingSelect">Status</label>
+                            </div>
+                        </div>
+
+                        <div class="col-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="isView"
+                                       name="isView"
+                                       th:checked="${menuPermissionModel.isView == 1}"
+                                       onclick="this.value = (this.checked ? 1 : 0)">
+
+                                <label class="form-check-label" for="isView">View</label>
+                            </div>
+                        </div>
+
+                        <div class="col-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="isAdd"
+                                       name="isAdd"
+                                       th:checked="${menuPermissionModel.isAdd == 1}"
+                                       onclick="this.value = (this.checked ? 1 : 0)">
+
+                                <label class="form-check-label" for="isAdd">Add</label>
+                            </div>
+                        </div>
+
+                        <div class="col-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="isEdit"
+                                       name="isEdit"
+                                       th:checked="${menuPermissionModel.isEdit == 1}"
+                                       onclick="this.value = (this.checked ? 1 : 0)">
+
+                                <label class="form-check-label" for="isEdit">Edit</label>
+                            </div>
+                        </div>
+
+                        <div class="col-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="isDelete"
+                                       name="isDelete"
+                                       th:checked="${menuPermissionModel.isDelete == 1}"
+                                       onclick="this.value = (this.checked ? 1 : 0)">
+
+                                <label class="form-check-label" for="isDelete">Delete</label>
+                            </div>
+                        </div>
+
+                        <div class="col-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="isPrint"
+                                       name="isPrint"
+                                       th:checked="${menuPermissionModel.isPrint == 1}"
+                                       onclick="this.value = (this.checked ? 1 : 0)">
+
+                                <label class="form-check-label" for="isPrint">Print</label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                        <button type="submit" class="btn btn-primary">Submit</button>
+
+                    </div>
+
+                </form>
+            </div>
+
+
+        </div>
+
+    </div><!-- End Basic Modal-->
+
+</section>
+
+</body>
+
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html layout:decorator="layout" lang="en" xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Activate Users</title>
+</head>
+
+<body>
+
+<section layout:fragment="content">
+
+    <div class="pagetitle">
+        <h1>Pending User List</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/"><i class="bi bi-house-door"></i></a></li>
+                <li class="breadcrumb-item active">User</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <div class="row">
+
+        <div class="col-lg-12 grid-margin stretch-card">
+
+            <div class="card">
+                <div class="card-body">
+
+                    <!-- Table with stripped rows -->
+                    <table class="table datatable">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr th:each="user: ${users}">
+
+                            <td th:text="${user.name}"></td>
+                            <td th:text="${user.email}"></td>
+                            <td th:text="${user?.roleModel?.name ?: 'N/A'}"></td>
+                            <td th:switch="${user.status}">
+                                <span th:case="'0'" class="badge bg-warning">Inactive</span>
+                                <span th:case="'1'" class="badge bg-success">Active</span>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        th:data-bs-target="'#basicModal'+${user.id}">Activate
+                                </button>
+                                <!-- Confirmation Dialog -->
+                                <div class="modal fade" th:id="'basicModal'+${user.id}" tabindex="-1">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Confirmation</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure to activate <a th:text="${user.name}"></a>
+                                            </div>
+                                            <div class="modal-footer">
+
+                                                <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Close
+                                                </button>
+
+                                                <form method="POST" th:action="@{/users/changeStatus}">
+                                                    <input type="hidden" name="id" th:value="${user.id}" />
+                                                    <input type="hidden" name="r" value="/users/activate" />
+                                                    <input type="hidden" name="v" th:value="1" />
+                                                    <button type="submit" class="btn btn-primary">Confirm</button>
+                                                </form>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- End Basic Modal-->
+                            </td>
+
+                        </tr>
+
+                        </tbody>
+
+
+
+                    </table>
+                    <!-- End Table with stripped rows -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+</body>
+
+</html>

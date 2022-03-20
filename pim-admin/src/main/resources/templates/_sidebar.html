@@ -1,0 +1,77 @@
+<!-- ======= Sidebar ======= -->
+<aside th:fragment="sidebar" id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+        <li th:each="role: ${session.userPermissions}" class="nav-item">
+
+            <a th:if="${role.isGroupMenu == false}" class="nav-link collapsed" th:href="${role.menuModel.route}">
+                <i class="bi bi-grid"></i>
+                <span th:text="${role.menuModel.name}">Menu Name</span>
+            </a>
+
+            <a th:if="${role.isGroupMenu == true}" class="nav-link collapsed" th:data-bs-target="'#components-nav' + ${role.id}"
+               data-bs-toggle="collapse" href="#">
+                <i class="bi bi-grid"></i>
+                <span th:text="${role.menuModel.name}">Menu Name</span>
+                <i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+
+            <ul th:id="'components-nav' + ${role.id}" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li th:each="childRole: ${role.child}">
+                    <a th:href="${childRole.menuModel.route}">
+                        <i class="bi bi-circle"></i>
+                        <span th:text="${childRole.menuModel.name}">Child Menu Name</span>
+                    </a>
+                </li>
+            </ul>
+        </li><!-- End Nav -->
+
+        <!--        <li class="nav-item">-->
+        <!--            <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">-->
+        <!--                <i class="bi bi-person-circle"></i>-->
+        <!--                <span>User</span>-->
+        <!--                <i class="bi bi-chevron-down ms-auto"></i>-->
+        <!--            </a>-->
+        <!--            <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">-->
+        <!--                <li>-->
+        <!--                    <a href="/users">-->
+        <!--                        <i class="bi bi-circle"></i><span>All Users</span>-->
+        <!--                    </a>-->
+        <!--                </li>-->
+        <!--                <li>-->
+        <!--                    <a href="/users/add">-->
+        <!--                        <i class="bi bi-circle"></i><span>Add User</span>-->
+        <!--                    </a>-->
+        <!--                </li>-->
+        <!--                <li>-->
+        <!--                    <a href="/users/activate">-->
+        <!--                        <i class="bi bi-circle"></i><span>Activate User</span>-->
+        <!--                    </a>-->
+        <!--                </li>-->
+        <!--                <li>-->
+        <!--                    <a href="/users/password/reset">-->
+        <!--                        <i class="bi bi-circle"></i><span>Reset Password</span>-->
+        <!--                    </a>-->
+        <!--                </li>-->
+        <!--                <li>-->
+        <!--                    <a href="/users/role">-->
+        <!--                        <i class="bi bi-circle"></i><span>Add / Edit Role</span>-->
+        <!--                    </a>-->
+        <!--                </li>-->
+        <!--                <li>-->
+        <!--                    <a href="/role/menu">-->
+        <!--                        <i class="bi bi-circle"></i><span>Assign Menu</span>-->
+        <!--                    </a>-->
+        <!--                </li>-->
+        <!--                &lt;!&ndash;                <li>&ndash;&gt;-->
+        <!--                &lt;!&ndash;                    <a href="/role/assign">&ndash;&gt;-->
+        <!--                &lt;!&ndash;                        <i class="bi bi-circle"></i><span>Assign Role</span>&ndash;&gt;-->
+        <!--                &lt;!&ndash;                    </a>&ndash;&gt;-->
+        <!--                &lt;!&ndash;                </li>&ndash;&gt;-->
+        <!--            </ul>-->
+        <!--        </li>&lt;!&ndash; End Components Nav &ndash;&gt;-->
+
+    </ul>
+
+</aside><!-- End Sidebar-->
