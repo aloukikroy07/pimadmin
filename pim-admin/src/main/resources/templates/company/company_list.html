@@ -88,16 +88,23 @@
 	
 	                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
 	                                        <li>
-	                                            <a class="dropdown-item"
+	                                            <a class="dropdown-item badge bg-warning"
 	                                               data-bs-toggle="modal"
 	                                               th:data-bs-target="'#editBusinessUnitModal'+${company.id}">Edit
 	                                            </a>
 	                                        </li>
-	                                        <li>
-	                                            <a class="dropdown-item"
+	                                        <li th:switch="${company.status}">
+	                                            <a class="dropdown-item badge bg-warning"
+	                                               	data-bs-toggle="modal"
+	                                               	th:data-bs-target="'#activateModal'+${company.id}">
+	                                               	<span th:case="'0'">Activate</span>
+	                                				<span th:case="'1'">Deactivate</span>
+	                                            </a>
+	                                        </li>
+	                                         <li>
+	                                            <a class="dropdown-item badge bg-warning"
 	                                               data-bs-toggle="modal"
-	                                               th:data-bs-target="'#activateModal'+${company.id}"
-	                                               th:value="${company.status == 1 ? 'Deactivate' : 'Activate'}">
+	                                               th:data-bs-target="'#editBusinessUnitModal'+${company.id}">Delete
 	                                            </a>
 	                                        </li>
 	                                    </ul>
