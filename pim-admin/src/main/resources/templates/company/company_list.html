@@ -88,29 +88,23 @@
 	
 	                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
 	                                        <li>
-	                                            <a class="dropdown-item badge bg-warning"
+	                                            <a class="dropdown-item badge bg-secondary"
 	                                               data-bs-toggle="modal" href="#"
 	                                               th:data-bs-target="'#editBusinessUnitModal'+${company.id}">
 	                                               Edit
 	                                            </a>
 	                                        </li>
 	                                        <li th:switch="${company.status}">
-	                                            <a class="dropdown-item badge bg-warning"
+	                                            <a class="dropdown-item badge bg-secondary"
 	                                               	data-bs-toggle="modal" href="#"
 	                                               	th:data-bs-target="'#activateModal'+${company.id}">
 	                                               	<span th:case="'0'">Activate</span>
 	                                				<span th:case="'1'">Deactivate</span>
 	                                            </a>
 	                                        </li>
-	                                         <li>
-	                                            <a class="dropdown-item badge bg-warning"
-	                                               data-bs-toggle="modal" href="#"
-	                                               th:data-bs-target="'#activateModal'+${company.id}">Delete
-	                                            </a>
-	                                        </li>
 	                                    </ul>
 	
-	                                    <!-- Activate / Deactivate Confirmation Dialog -->
+	          <!-- Activate / Deactivate Confirmation Dialog -->
 	                                    <div class="modal fade" th:id="'activateModal'+${company.id}"
 	                                         tabindex="-1">
 	                                        <div class="modal-dialog">
@@ -121,7 +115,10 @@
 	                                                            aria-label="Close"></button>
 	                                                </div>
 	                                                <div class="modal-body">
-	                                                    <a th:value="${'Are you sure to ' + (company.status == 1 ? 'Deactivate ' : 'Activate ')} + ' ?'"></a>
+	                                                    <a th:switch="${company.status}">
+		                                                    <span th:case="'0'">Are you sure to Activate id no. <span id= "confActivateTextSpan" th:text="${company.id}+' ?'"></span></span>
+		                                					<span th:case="'1'">Are you sure to Deactivate id no. <span id= "confDeactivateTextSpan" th:text="${company.id}+' ?'"></span></span>
+	                                					</a>
 	                                                </div>
 	                                                <div class="modal-footer">
 	
@@ -129,11 +126,9 @@
 	                                                            data-bs-dismiss="modal">Close
 	                                                    </button>
 	
-	                                                    <form method="POST"
-	                                                          th:action="@{'/business/unit/changeStatus'}">
+	                                                    <form method="POST" th:action="@{/company/changeStatus}">
 	                                                        <input type="hidden" name="id" th:value="${company.id}"/>
-	                                                        <input type="hidden" name="v"
-	                                                               th:value="${company.status == 1 ? 0 : 1}"/>
+	                                                        <input type="hidden" name="status" th:value="${company.status == '1' ? '0' : '1'}"/>
 	                                                        <button type="submit" class="btn btn-primary">Confirm</button>
 	                                                    </form>
 	

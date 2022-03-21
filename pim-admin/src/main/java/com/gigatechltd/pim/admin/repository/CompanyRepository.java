@@ -86,4 +86,11 @@ public class CompanyRepository {
 			return 0;
 		}
 	}
+	
+	public int activateOrDeactivateCompany(CompanyModel cm){
+		String sql = "update t_companies set status = '"+cm.getStatus()+"' where id ="+cm.getId();
+		int result= jdbcTemplate.update(sql);
+		return result;
+	}
+	
 }

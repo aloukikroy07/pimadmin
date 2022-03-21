@@ -20,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -90,4 +91,19 @@ public class CompanyController {
 		List<BusinessUnitModel> businessUnits = companyRepository.businessUnitDropdown(company);
 		return businessUnits;
 	}
+	
+	@PostMapping({"/company/changeStatus"})
+	public String companyActivateOrDeactivate(@ModelAttribute("CompanyModel") CompanyModel companyModel){
+		int result = companyRepository.activateOrDeactivateCompany(companyModel);
+		return "redirect:/company";
+	}
+	
+	/*
+	 * @PostMapping({"/company/delete/{id}"}) public String
+	 * companyDelete(@PathVariable(name = "id") Integer id){ //int result =
+	 * companyRepository.activateOrDeactivateCompany(id); return
+	 * "redirect:/company"; }
+	 */
+
+
 }
