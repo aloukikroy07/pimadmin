@@ -49,14 +49,14 @@ public class CompanyRepository {
 		return businessUnits;
 	}
 	
-	public List<BusinessUnitModel> businessUnitDropdown(){
-		String sql = "select id, unit_name as unitName from t_business_units where company= '1'";
+	public List<BusinessUnitModel> businessUnitDropdown(String companyId){
+		String sql = "select id, unit_name as unitName from t_business_units where company_Id= '"+companyId+"'";
 		List <BusinessUnitModel> businessUnits = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(BusinessUnitModel.class));
 		return businessUnits;
 	}
 	
 	public List<CompanyUnitModel> getCompanyUnits(){
-		String sql = "select t0.id, t0.name, t1.name as companyName, t2.unit_name as unitName, t0.parent_id,\r\n" + 
+		String sql = "select t0.id, t0.name, t1.name as companyName, t2.unit_name as businessUnitName, t0.parent_id,\r\n" + 
 				"(case\r\n" + 
 				"when t2.id>2\r\n" + 
 				"then (select t10.name from t_company_units t10 where t10.id=t0.parent_id)\r\n" + 

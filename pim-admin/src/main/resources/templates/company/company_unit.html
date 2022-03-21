@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html layout:decorator="layout" lang="en" xmlns:layout="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Business Unit</title>
+    <title>Company Unit</title>
 </head>
 
 <body>
@@ -9,11 +9,11 @@
 <section layout:fragment="content">
 
     <div class="pagetitle">
-        <h1>Business Unit</h1>
+        <h1>Company Unit</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/"><i class="bi bi-house-door"></i></a></li>
-                <li class="breadcrumb-item active">Business Unit</li>
+                <li class="breadcrumb-item active">Company Unit</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -44,7 +44,7 @@
                                 <button class="btn btn-primary"
                                         type="button"
                                         data-bs-toggle="modal"
-                                        data-bs-target="#addModal">Add Business Unit
+                                        data-bs-target="#addModal">Add Company Unit
                                 </button>
                             </div>
                         </div>
@@ -83,20 +83,20 @@
                                         <li>
                                             <a class="dropdown-item"
                                                data-bs-toggle="modal"
-                                               th:data-bs-target="'#editBusinessUnitModal'+${companyUnits.id}">Edit
+                                               th:data-bs-target="'#editcompanyUnitsModal'+${companyUnits.id}">Edit
                                             </a>
                                         </li>
                                         <li>
                                             <a class="dropdown-item"
                                                data-bs-toggle="modal"
                                                th:data-bs-target="'#activateModal'+${companyUnits.id}"
-                                               th:text="${businessUnit.status == 1 ? 'Deactivate' : 'Activate'}">
+                                               th:text="${companyUnits.status == 1 ? 'Deactivate' : 'Activate'}">
                                             </a>
                                         </li>
                                     </ul>
 
                                     <!-- Activate / Deactivate Confirmation Dialog -->
-                                    <div class="modal fade" th:id="'activateModal'+${businessUnit.id}"
+                                    <div class="modal fade" th:id="'activateModal'+${companyUnits.id}"
                                          tabindex="-1">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
@@ -106,7 +106,7 @@
                                                             aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <a th:text="${'Are you sure to ' + (businessUnit.status == 1 ? 'Deactivate ' : 'Activate ') + businessUnit.unitName} + ' ?'"></a>
+                                                    <a th:text="${'Are you sure to ' + (companyUnits.status == 1 ? 'Deactivate ' : 'Activate ') + companyUnits.businessUnitName} + ' ?'"></a>
                                                 </div>
                                                 <div class="modal-footer">
 
@@ -116,9 +116,9 @@
 
                                                     <form method="POST"
                                                           th:action="@{'/business/unit/changeStatus'}">
-                                                        <input type="hidden" name="id" th:value="${businessUnit.id}"/>
+                                                        <input type="hidden" name="id" th:value="${companyUnits.id}"/>
                                                         <input type="hidden" name="v"
-                                                               th:value="${businessUnit.status == 1 ? 0 : 1}"/>
+                                                               th:value="${companyUnits.status == 1 ? 0 : 1}"/>
                                                         <button type="submit" class="btn btn-primary">Confirm</button>
                                                     </form>
 
@@ -128,7 +128,7 @@
                                     </div><!-- End Basic Modal-->
 
                                     <!-- Edit Modal -->
-                                    <div class="modal fade" th:id="'editBusinessUnitModal'+${businessUnit.id}"
+                                    <div class="modal fade" th:id="'editcompanyUnitsModal'+${companyUnits.id}"
                                          role="dialog"
                                          tabindex="-1">
                                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
@@ -137,8 +137,8 @@
                                             <div class="modal-content">
 
                                                 <form method="post"
-                                                      th:object="${businessUnitUpdateModel}"
-                                                      th:action="'/business/unit/update/' +${businessUnit.id}">
+                                                      th:object="${companyUnitsUpdateModel}"
+                                                      th:action="'/business/unit/update/' +${companyUnits.id}">
 
                                                     <div class="modal-header">
                                                         <h5 class="modal-title">Update Business Unit</h5>
@@ -297,42 +297,36 @@
             <div class="modal-content">
 
                 <form method="post"
-                      th:object="${businessUnitModel}"
+                      th:object="${companyUnitModel}"
                       th:action="@{/company/unit/add}">
 
                     <div class="modal-header">
-                        <h5 class="modal-title">Add Business Unit</h5>
+                        <h5 class="modal-title">Add Company Unit</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                 aria-label="Close"></button>
                     </div>
 
                     <div class="modal-body row g-3">
-
-                        <div class="col-12 ">
+                    	
+                    	<div class="col-6">
                             <div class="form-floating">
-                                <input id="unit_name"
-                                       type="text"
-                                       class="form-control"
-                                       placeholder="Enter Unit Name"
-                                       required
-                                       th:field="*{unitName}">
-                                <label for="unit_name" class="form-label">Unit Name</label>
-                            </div>
-                        </div>
-
-                        <div class="col-12 ">
-                            <div class="form-floating">
-                                <input id="short_name"
-                                       type="text"
-                                       class="form-control"
-                                       placeholder="Enter Short Name"
-                                       required
-                                       th:field="*{shortName}">
-                                <label for="unit_name" class="form-label">Short Name</label>
+                                <select class="form-select" id="company" aria-label="State" th:field="*{companyId}">
+                                	<option value="0" selected disabled>------Select Company------</option>
+                                    <option th:each="companyList:${companyList}" th:value="${companyList.id}" th:text="${companyList.name}"></option>
+                                </select>
+                                <label for="company">Company</label>
                             </div>
                         </div>
                         
-                        <div class="col-12">
+                        <div class="col-6">
+                            <div class="form-floating">
+                                <select class="form-select" id="businessUnit" aria-label="State" th:field="*{businessUnitId}">
+                                </select>
+                                <label for="businessUnit">Business Unit</label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-6">
                             <div class="form-floating">
                                 <select class="form-select" id="floatingSelect" aria-label="State" th:field="*{companyId}">
                                 	<option value="0" selected disabled>------Select Company------</option>
@@ -342,19 +336,67 @@
                             </div>
                         </div>
 
-                        <div class="col-12 ">
+                        <div class="col-6">
                             <div class="form-floating">
-                                <input id="hierarchy"
+                                <input id="unit_name"
                                        type="text"
                                        class="form-control"
-                                       placeholder="Enter Hierarchy"
+                                       placeholder="Enter Company Unit Name"
                                        required
-                                       th:field="*{hierarchy}">
-                                <label for="hierarchy" class="form-label">Hierarchy</label>
+                                       th:field="*{name}">
+                                <label for="unit_name" class="form-label">Company Unit Name</label>
                             </div>
                         </div>
 
-                        <div class="col-12">
+                        <div class="col-6">
+                            <div class="form-floating">
+                                <input id="short_name"
+                                       type="text"
+                                       class="form-control"
+                                       placeholder="Enter Short Name"
+                                       required
+                                       th:field="*{shortName}">
+                                <label for="short_name" class="form-label">Short Name</label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-6">
+                            <div class="form-floating">
+                                <input id="address"
+                                       type="text"
+                                       class="form-control"
+                                       placeholder="Enter address"
+                                       required
+                                       th:field="*{address}">
+                                <label for="address" class="form-label">Address</label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-6">
+                            <div class="form-floating">
+                                <input id="city"
+                                       type="text"
+                                       class="form-control"
+                                       placeholder="Enter city"
+                                       required
+                                       th:field="*{city}">
+                                <label for="city" class="form-label">City</label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-6">
+                            <div class="form-floating">
+                                <input id="country"
+                                       type="text"
+                                       class="form-control"
+                                       placeholder="Enter country"
+                                       required
+                                       th:field="*{country}">
+                                <label for="country" class="form-label">Country</label>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
                             <div class="form-floating">
                                 <select class="form-select" id="floatingSelect" aria-label="State" th:field="*{status}">
                                     <option value="1">Active</option>
@@ -381,6 +423,25 @@
         </div>
 
     </div><!-- End Basic Modal-->
+    
+    <script>
+		$(document).ready(function() {
+		    $("#company").on("change", function() {
+		    	sendAjaxRequest();
+		    });
+		});
+		
+		function sendAjaxRequest() {
+		    var company = $("#company").val();
+		    $.get( "/company/business_unit/find?company=" + company, function( data ) {
+		        $("#businessUnit").empty();
+		        data.forEach(function(item, i) {
+		            var option = "<option value = " + item + ">" + item +  "</option>";
+		            $("#businessUnit").append(option);
+		        });
+		    });
+		};
+	</script>
 
 </section>
 

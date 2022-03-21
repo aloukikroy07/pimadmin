@@ -22,7 +22,7 @@ public class CompanyUnitModel {
 	private String approvalAuthority;
 	private String headedBy;
 	private String secondMan;
-	private int status;
+	private String status;
 	public CompanyUnitModel() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -30,7 +30,7 @@ public class CompanyUnitModel {
 	public CompanyUnitModel(long id, long companyId, String companyName, long businessUnitId, String businessUnitName,
 			long parentId, String parentName, String name, String shortName, String address, String city, String state,
 			String postCode, String country, String phoneNo, String email, String website, String reportTo,
-			String approvalAuthority, String headedBy, String secondMan, int status) {
+			String approvalAuthority, String headedBy, String secondMan, String status) {
 		super();
 		this.id = id;
 		this.companyId = companyId;
@@ -181,10 +181,10 @@ public class CompanyUnitModel {
 	public void setSecondMan(String secondMan) {
 		this.secondMan = secondMan;
 	}
-	public int getStatus() {
+	public String getStatus() {
 		return status;
 	}
-	public void setStatus(int status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 	

@@ -10,6 +10,10 @@ import com.gigatechltd.pim.admin.model.CompanyModel;
 import com.gigatechltd.pim.admin.model.CompanyUnitModel;
 import com.gigatechltd.pim.admin.repository.CompanyRepository;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -20,6 +24,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class CompanyController {
@@ -69,11 +75,19 @@ public class CompanyController {
 	public String companyUnit(Model model, Model model1, CompanyUnitModel companyUnitModel){
 		model.addAttribute("companyUnits", companyRepository.getCompanyUnits());
 		model.addAttribute("companyUnitModel", companyUnitModel);
+		model1.addAttribute("companyList", companyRepository.companyDropdown());
 		return "company/company_unit";
 	}
 	
 	@PostMapping({"/company/unit/add"})
 	public String addCompanyUnit(@ModelAttribute("CompanyUnitModel") CompanyUnitModel companyUnitModel){
 		return "redirect:/company/unit";
+	}
+	
+	@GetMapping({"/company/business_unit/find"})
+	@ResponseBody
+	public List<BusinessUnitModel> getBusinessUnit(@RequestParam String company) {
+		List<BusinessUnitModel> businessUnits = companyRepository.businessUnitDropdown(company);
+		return businessUnits;
 	}
 }
