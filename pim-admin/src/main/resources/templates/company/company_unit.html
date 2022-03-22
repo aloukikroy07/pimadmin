@@ -321,6 +321,7 @@
                         <div class="col-6">
                             <div class="form-floating">
                                 <select class="form-select" id="businessUnit" aria-label="State" th:field="*{businessUnitId}">
+                                	<option value="0" selected disabled>------Select Business Unit------</option>
                                 </select>
                                 <label for="businessUnit">Business Unit</label>
                             </div>
@@ -328,11 +329,10 @@
                         
                         <div class="col-6">
                             <div class="form-floating">
-                                <select class="form-select" id="floatingSelect" aria-label="State" th:field="*{companyId}">
-                                	<option value="0" selected disabled>------Select Company------</option>
-                                    <option th:each="companyList:${companyList}" th:value="${companyList.id}" th:text="${companyList.name}"></option>
+                                <select class="form-select" id="parentUnit" aria-label="State" th:field="*{parentId}">
+                                	<option value="0" selected disabled>------Select Parent Unit------</option>
                                 </select>
-                                <label for="floatingSelect">Status</label>
+                                <label for="parentUnit">Parent Unit</label>
                             </div>
                         </div>
 
@@ -429,18 +429,38 @@
 		    $("#company").on("change", function() {
 		    	sendAjaxRequest();
 		    });
+		    $("#businessUnit").on("change", function() {
+		    	sendAjaxRequest();
+		    });
 		});
+		
+		var selectElem = $("#businessUnit");
+		var selectElem1 = $("#companyUnit");
 		
 		function sendAjaxRequest() {
 		    var company = $("#company").val();
 		    $.get( "/company/business_unit/find?company=" + company, function( data ) {
 		        $("#businessUnit").empty();
-		        data.forEach(function(item, i) {
-		            var option = "<option value = " + item + ">" + item +  "</option>";
-		            $("#businessUnit").append(option);
+		        //data.forEach(function(item, i) {
+		        //    var option = "<option value = " + item + ">" + item +  "</option>";
+		        //    $("#businessUnit").append(option);
+		        //});
+		        var listOfData = data;
+		        
+		        $.each(listOfData, function(id, unitName){
+		        	$("<option/>", {
+		                value: id,
+		                text: unitName
+		            }).appendTo(selectElem);
 		        });
+			    sendAjaxRequest1();
 		    });
 		};
+		
+		function sendAjaxRequest1() {
+			alert("Hello");
+		};
+		
 	</script>
 
 </section>

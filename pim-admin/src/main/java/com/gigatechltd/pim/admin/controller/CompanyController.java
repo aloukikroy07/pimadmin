@@ -53,11 +53,10 @@ public class CompanyController {
     }
 	
 	@GetMapping({"/company/business_unit"})
-	public String businessUnit(Model model, Model model1, BusinessUnitModel businessUnitModel) {
+	public String businessUnit(Model model, BusinessUnitModel businessUnitModel) {
 		model.addAttribute("businessUnits", companyRepository.getAllBusinessUnit());
 		model.addAttribute("businessUnitModel", businessUnitModel);
-		model1.addAttribute("companyList", companyRepository.companyDropdown());
-//		model1.addAttribute("companyModel", companyModel);
+		
 		return "company/business_unit";
 	}
 	
@@ -76,7 +75,7 @@ public class CompanyController {
 	public String companyUnit(Model model, Model model1, CompanyUnitModel companyUnitModel){
 		model.addAttribute("companyUnits", companyRepository.getCompanyUnits());
 		model.addAttribute("companyUnitModel", companyUnitModel);
-		model1.addAttribute("companyList", companyRepository.companyDropdown());
+		model1.addAttribute("companyList", companyRepository.companyId());
 		return "company/company_unit";
 	}
 	
@@ -87,9 +86,16 @@ public class CompanyController {
 	
 	@GetMapping({"/company/business_unit/find"})
 	@ResponseBody
-	public List<BusinessUnitModel> getBusinessUnit(@RequestParam String company) {
-		List<BusinessUnitModel> businessUnits = companyRepository.businessUnitDropdown(company);
+	public Map<Long, String> getBusinessUnit(@RequestParam String company) {
+		Map<Long, String> businessUnits = companyRepository.businessUnitDropdown(company);
 		return businessUnits;
+	}
+	
+	@GetMapping({"/company/parent/find"})
+	@ResponseBody
+	public Map<Long, String> getParentUnit(@RequestParam String businessUnit, @RequestParam String companyId) {
+		Map<Long, String> parentUnit = companyRepository.parentDropDown(companyId, businessUnit);
+		return parentUnit;
 	}
 	
 	@PostMapping({"/company/changeStatus"})

@@ -1,6 +1,8 @@
 package com.gigatechltd.pim.admin.repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -37,10 +39,11 @@ public class CompanyRepository {
 		}
 	}
 	
-	public List<CompanyModel> companyDropdown(){
-		String sql = "select id, name from t_companies";
+	public long companyId(){
+		String sql = "select min(id) as id from t_companies";
 		List <CompanyModel> companies = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(CompanyModel.class));
-		return companies;
+		long a = companies.get(0).getId();
+		return a;
 	}
 	
 	public List<BusinessUnitModel> getAllBusinessUnit(){
@@ -49,10 +52,14 @@ public class CompanyRepository {
 		return businessUnits;
 	}
 	
-	public List<BusinessUnitModel> businessUnitDropdown(String companyId){
+	public Map<Long, String> businessUnitDropdown(String companyId){
 		String sql = "select id, unit_name as unitName from t_business_units where company_Id= '"+companyId+"'";
-		List <BusinessUnitModel> businessUnits = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(BusinessUnitModel.class));
-		return businessUnits;
+		List<BusinessUnitModel> businessUnits= jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(BusinessUnitModel.class));
+		Map<Long, String> map=new HashMap<Long, String>();
+		for(int i=0; i<businessUnits.size(); i++) {
+			map.put(businessUnits.get(i).getId(), businessUnits.get(i).getUnitName());
+		}
+		return map;
 	}
 	
 	public List<CompanyUnitModel> getCompanyUnits(){
@@ -68,6 +75,34 @@ public class CompanyRepository {
 				"inner join t_business_units t2 on t2.id=t0.business_unit_id";
 		List <CompanyUnitModel> companyUnits = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(CompanyUnitModel.class));
 		return companyUnits;
+	}
+	
+	public Map<Long, String> parentDropDown(String companyId, String businessUnitId){
+		String sql = "select\r\n" + 
+				"(\r\n" + 
+				"case \r\n" + 
+				"when t0.hierarchy>1\r\n" + 
+				"then (select t10.id from t_company_units t10 where t10.business_unit_id= t0.id)\r\n" + 
+				"else t0.id\r\n" + 
+				"end) id,\r\n" + 
+				"(\r\n" + 
+				"case \r\n" + 
+				"when t0.hierarchy>1\r\n" + 
+				"then (select t10.name from t_company_units t10 where t10.business_unit_id= t0.id)\r\n" + 
+				"else t0.unit_name\r\n" + 
+				"end) name\r\n" + 
+				"from t_business_units t0\r\n" + 
+				"where t0.hierarchy<\r\n" + 
+				"(select \r\n" + 
+				"hierarchy\r\n" + 
+				"from t_business_units t0\r\n" + 
+				"where company_id='"+companyId+"' and id='"+businessUnitId+"') and t0.company_id='"+companyId+"'";
+		List <CompanyUnitModel> companyUnits = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(CompanyUnitModel.class));
+		Map<Long, String> map=new HashMap<Long, String>();
+		for(int i=0; i<companyUnits.size(); i++) {
+			map.put(companyUnits.get(i).getId(), companyUnits.get(i).getName());
+		}
+		return map;
 	}
 	
 	public List<CompanyUnitModel> companyUnitsDropDown(){
