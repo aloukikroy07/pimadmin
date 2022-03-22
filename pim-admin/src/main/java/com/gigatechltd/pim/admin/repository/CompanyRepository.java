@@ -47,7 +47,8 @@ public class CompanyRepository {
 	}
 	
 	public List<BusinessUnitModel> getAllBusinessUnit(){
-		String sql = "select t0.id, t0.unit_name as unitName, t1.name as companyName, t0.short_name as shortName, t0.hierarchy from t_business_units t0 inner join t_companies t1 on t0.company_id=t1.id";
+		String sql = "select t0.id, t0.unit_name as unitName, t1.name as companyName, t0.short_name as shortName,"
+				+ " t0.hierarchy, t0.status from t_business_units t0 inner join t_companies t1 on t0.company_id=t1.id order by t0.hierarchy asc";
 		List <BusinessUnitModel> businessUnits = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(BusinessUnitModel.class));
 		return businessUnits;
 	}

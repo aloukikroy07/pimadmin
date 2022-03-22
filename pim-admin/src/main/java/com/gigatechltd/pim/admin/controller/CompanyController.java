@@ -62,6 +62,7 @@ public class CompanyController {
 	
 	@PostMapping({"/company/business_unit/add"})
 	public String addBusinessUnit(@ModelAttribute("BusinessUnitModel") BusinessUnitModel businessUnitModel){
+		businessUnitModel.setCompanyId(companyRepository.companyId());
 		int result = companyRepository.addBusinessUnits(businessUnitModel);
 		if(result==1) {
 			return "redirect:/company/business_unit";
