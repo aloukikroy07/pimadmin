@@ -98,12 +98,13 @@ public class CompanyController {
 		return "redirect:/company";
 	}
 	
-	/*
-	 * @PostMapping({"/company/delete/{id}"}) public String
-	 * companyDelete(@PathVariable(name = "id") Integer id){ //int result =
-	 * companyRepository.activateOrDeactivateCompany(id); return
-	 * "redirect:/company"; }
-	 */
+	
+	  @PostMapping({"/company/editCompany"})
+	  public String openCompanyEditModal(@ModelAttribute("CompanyModel") CompanyModel companyModel){ 
+		  companyRepository.updateCompany(companyModel); 
+		  return "redirect:/company"; 
+	  }
+	 
 
 
 }

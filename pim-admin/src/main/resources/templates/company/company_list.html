@@ -4,6 +4,7 @@
 <head>
     <title>Company</title>
     <meta charset="UTF-8">
+    <script type="text/javascript" src="/js/custom.js"></script>
 </head>
 
 <body>
@@ -83,14 +84,27 @@
 	                                <span th:case="'1'" class="badge bg-success">Active</span>
 	                            </td>
 	                            <td>
+	                            	<!-- For edit Modal: data shown in edit modal by jquery code is below -->
+	                            			<input type="hidden" id="cId"    th:value="${company.id}">
+											<input type="hidden" id="cName" th:value="${company.name}">
+											<input type="hidden" id="cBankId" th:value="${company.bankId}">
+											<input type="hidden" id="cAddress" th:value="${company.address}">
+											<input type="hidden" id="cCity" th:value="${company.city}">
+											<input type="hidden" id="cState" th:value="${company.state}">
+											<input type="hidden" id="cCountry" th:value="${company.country}">
+											<input type="hidden" id="cPhoneNo" th:value="${company.phoneNo}">
+											<input type="hidden" id="cEmail" th:value="${company.email}">
+											<input type="hidden" id="cWebsite" th:value="${company.website}">
+	                            
 	                                <div class="filter" >
 	                                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
 	
 	                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
 	                                        <li>
 	                                            <a class="dropdown-item badge bg-secondary"
-	                                               data-bs-toggle="modal" href="#"
-	                                               th:data-bs-target="'#editBusinessUnitModal'+${company.id}">
+	                                               href="" onclick="loadCompanyEditData(this)"
+	                                               data-bs-toggle="modal"
+	           	                                   data-bs-target="#editCompanyModal">
 	                                               Edit
 	                                            </a>
 	                                        </li>
@@ -155,118 +169,6 @@
 	                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
 	                                                                aria-label="Close"></button>
 	                                                    </div>
-	
-	                                                    <!--                                                    <div class="modal-body row g-3">-->
-	
-	                                                    <!--                                                        <div class="col-12">-->
-	                                                    <!--                                                            <div class="form-floating">-->
-	                                                    <!--                                                                <select class="form-select" id="editRole" disabled-->
-	                                                    <!--                                                                        aria-label="State">-->
-	                                                    <!--                                                                    <option-->
-	                                                    <!--                                                                            th:text="${rolePermission.roleModel.name}">-->
-	                                                    <!--                                                                    </option>-->
-	                                                    <!--                                                                </select>-->
-	                                                    <!--                                                                <label for="editRole">Role</label>-->
-	                                                    <!--                                                                <input type="hidden" name="roleId"-->
-	                                                    <!--                                                                       th:value="${rolePermission.roleModel.id}"/>-->
-	                                                    <!--                                                            </div>-->
-	                                                    <!--                                                        </div>-->
-	
-	                                                    <!--                                                        <div class="col-12">-->
-	                                                    <!--                                                            <div class="form-floating">-->
-	                                                    <!--                                                                <select class="form-select" id="editMenu" disabled-->
-	                                                    <!--                                                                        aria-label="State">-->
-	                                                    <!--                                                                    <option-->
-	                                                    <!--                                                                            th:text="${rolePermission.menuModel.name}">-->
-	                                                    <!--                                                                    </option>-->
-	                                                    <!--                                                                </select>-->
-	                                                    <!--                                                                <label for="editMenu">Menu</label>-->
-	                                                    <!--                                                            </div>-->
-	                                                    <!--                                                        </div>-->
-	
-	                                                    <!--                                                        <div class="col-12">-->
-	                                                    <!--                                                            <div class="form-floating">-->
-	                                                    <!--                                                                <select class="form-select" id="editStatus"-->
-	                                                    <!--                                                                        aria-label="State" th:field="*{status}">-->
-	                                                    <!--                                                                    <option value="1">Active</option>-->
-	                                                    <!--                                                                    <option value="0">Inactive</option>-->
-	                                                    <!--                                                                </select>-->
-	                                                    <!--                                                                <label for="editStatus">Status</label>-->
-	                                                    <!--                                                            </div>-->
-	                                                    <!--                                                        </div>-->
-	
-	                                                    <!--                                                        <div class="col-3">-->
-	                                                    <!--                                                            <div class="form-check">-->
-	                                                    <!--                                                                <input class="form-check-input" type="checkbox"-->
-	                                                    <!--                                                                       id="editIsView"-->
-	                                                    <!--                                                                       name="isView"-->
-	                                                    <!--                                                                       th:value="${rolePermission.isView}"-->
-	                                                    <!--                                                                       th:checked="${rolePermission.isView == 1}"-->
-	                                                    <!--                                                                       onclick="this.value = (this.checked ? 1 : 0)">-->
-	
-	                                                    <!--                                                                <label class="form-check-label"-->
-	                                                    <!--                                                                       for="editIsView">View</label>-->
-	                                                    <!--                                                            </div>-->
-	                                                    <!--                                                        </div>-->
-	
-	                                                    <!--                                                        <div class="col-3">-->
-	                                                    <!--                                                            <div class="form-check">-->
-	                                                    <!--                                                                <input class="form-check-input" type="checkbox"-->
-	                                                    <!--                                                                       id="editIsAdd"-->
-	                                                    <!--                                                                       name="isAdd"-->
-	                                                    <!--                                                                       th:value="${rolePermission.isAdd}"-->
-	                                                    <!--                                                                       th:checked="${rolePermission.isAdd == 1}"-->
-	                                                    <!--                                                                       onclick="this.value = (this.checked ? 1 : 0)">-->
-	
-	                                                    <!--                                                                <label class="form-check-label"-->
-	                                                    <!--                                                                       for="editIsAdd">Add</label>-->
-	                                                    <!--                                                            </div>-->
-	                                                    <!--                                                        </div>-->
-	
-	                                                    <!--                                                        <div class="col-3">-->
-	                                                    <!--                                                            <div class="form-check">-->
-	                                                    <!--                                                                <input class="form-check-input" type="checkbox"-->
-	                                                    <!--                                                                       id="editIsEdit"-->
-	                                                    <!--                                                                       name="isEdit"-->
-	                                                    <!--                                                                       th:value="${rolePermission.isEdit}"-->
-	                                                    <!--                                                                       th:checked="${rolePermission.isEdit == 1}"-->
-	                                                    <!--                                                                       onclick="this.value = (this.checked ? 1 : 0)">-->
-	
-	                                                    <!--                                                                <label class="form-check-label"-->
-	                                                    <!--                                                                       for="editIsEdit">Edit</label>-->
-	                                                    <!--                                                            </div>-->
-	                                                    <!--                                                        </div>-->
-	
-	                                                    <!--                                                        <div class="col-3">-->
-	                                                    <!--                                                            <div class="form-check">-->
-	                                                    <!--                                                                <input class="form-check-input" type="checkbox"-->
-	                                                    <!--                                                                       id="editIsDelete"-->
-	                                                    <!--                                                                       name="isDelete"-->
-	                                                    <!--                                                                       th:value="${rolePermission.isDelete}"-->
-	                                                    <!--                                                                       th:checked="${rolePermission.isDelete == 1}"-->
-	                                                    <!--                                                                       onclick="this.value = (this.checked ? 1 : 0)">-->
-	
-	                                                    <!--                                                                <label class="form-check-label"-->
-	                                                    <!--                                                                       for="editIsDelete">Delete</label>-->
-	                                                    <!--                                                            </div>-->
-	                                                    <!--                                                        </div>-->
-	
-	                                                    <!--                                                        <div class="col-3">-->
-	                                                    <!--                                                            <div class="form-check">-->
-	                                                    <!--                                                                <input class="form-check-input" type="checkbox"-->
-	                                                    <!--                                                                       id="editIsPrint"-->
-	                                                    <!--                                                                       name="isPrint"-->
-	                                                    <!--                                                                       th:value="${rolePermission.isPrint}"-->
-	                                                    <!--                                                                       th:checked="${rolePermission.isPrint == 1}"-->
-	                                                    <!--                                                                       onclick="this.value = (this.checked ? 1 : 0)">-->
-	
-	                                                    <!--                                                                <label class="form-check-label"-->
-	                                                    <!--                                                                       for="editIsPrint">Print</label>-->
-	                                                    <!--                                                            </div>-->
-	                                                    <!--                                                        </div>-->
-	
-	                                                    <!--                                                    </div>-->
-	
 	                                                    <div class="modal-footer">
 	
 	                                                        <button type="button" class="btn btn-secondary"
@@ -343,6 +245,17 @@
                             </div>
                         </div>
 
+						<div class="col-6 ">
+                            <div class="form-floating">
+                                <input id="address"
+                                       type="text"
+                                       class="form-control"
+                                       placeholder="Enter Address here"
+                                       th:field="*{address}">
+                                <label for="address" class="form-label">Address</label>
+                            </div>
+                        </div>
+		
                         <div class="col-6 ">
                             <div class="form-floating">
                                 <input id="city"
@@ -441,13 +354,158 @@
 
                     </div>
 
-                 <!-- </form> -->
+                 </form> 
             </div>
 
 
         </div>
 
     </div><!-- End Basic Modal-->
+    
+    <!--Start Edit Company Modal Dialog -->
+    <div class="modal fade" id="editCompanyModal" role="dialog"
+         tabindex="-2">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+
+            <div class="modal-content">
+
+                <form method="post" th:object="${companyModel}" th:action="@{/company/editCompany}">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Company</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body row g-3" >
+                        <input type="hidden" id="id" name="id">
+                        
+                        <div class="col-6 ">
+                            <div class="form-floating">
+                                <input id="name"
+                                       type="text"
+                                       class="form-control"
+                                       required
+                                       name="name">
+                                <label for="name" class="form-label">Company Name</label>
+                            </div>
+                        </div>
+                        <div class="col-6 ">
+                            <div class="form-floating">
+                                <input id="bankId"
+                                       type="text"
+                                       class="form-control"
+                                       required
+                                       th:field="*{bankId}">
+                                <label for="bankId" class="form-label">Bank Code</label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-6 ">
+                            <div class="form-floating">
+                                <input id="address"
+                                       type="text"
+                                       class="form-control"
+                                       th:field="*{address}">
+                                <label for="address" class="form-label">Address</label>
+                            </div>
+                        </div>
+
+                        <div class="col-6 ">
+                            <div class="form-floating">
+                                <input id="city"
+                                       type="text"
+                                       class="form-control"
+                                       required
+                                       name="city">
+                                <label for="city" class="form-label">City</label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-6 ">
+                            <div class="form-floating">
+                                <input id="state"
+                                       type="text"
+                                       class="form-control"
+                                       required
+                                       name="state">
+                                <label for="state" class="form-label">State</label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-6 ">
+                            <div class="form-floating">
+                                <input id="country"
+                                       type="text"
+                                       class="form-control"
+                                       required
+                                       name="country">
+                                <label for="country" class="form-label">Country</label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-6 ">
+                            <div class="form-floating">
+                                <input id="phoneNo"
+                                       type="text"
+                                       class="form-control"
+                                       required
+                                       name="phoneNo">
+                                <label for="phoneNo" class="form-label">Phone No</label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-6 ">
+                            <div class="form-floating">
+                                <input id="email"
+                                       type="text"
+                                       class="form-control"
+                                       required
+                                       name="email">
+                                <label for="email" class="form-label">Email</label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-6 ">
+                            <div class="form-floating">
+                                <input id="website"
+                                       type="text"
+                                       class="form-control"
+                                       required
+                                       name="website">
+                                <label for="website" class="form-label">Website</label>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="form-floating">
+                                <select class="form-select" id="floatingSelect" aria-label="State" th:name="status" onchange="testStatus(this)">
+                                    <option value="1">Active</option>
+                                    <option value="0">Inactive</option>
+                                </select>
+                                <label for="floatingSelect">Status</label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                        <button type="submit" class="btn btn-primary">Submit</button>
+
+                    </div>
+
+                  </form> 
+            </div>
+
+
+        </div>
+
+    </div>
+    <!--End Edit Company Modal Dialog -->
+	                            
 
 </section>
 

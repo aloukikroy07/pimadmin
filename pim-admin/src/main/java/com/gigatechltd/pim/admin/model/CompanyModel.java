@@ -12,13 +12,13 @@ public class CompanyModel {
 	private String phoneNo;
 	private String email;
 	private String website;
-	private String status;
+	private char status;
 	public CompanyModel() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	public CompanyModel(long id, long bankId, String name, String address, String city, String state, String postCode,
-			String country, String phoneNo, String email, String website, String status) {
+			String country, String phoneNo, String email, String website, char status) {
 		super();
 		this.id = id;
 		this.bankId = bankId;
@@ -99,10 +99,10 @@ public class CompanyModel {
 	public void setWebsite(String website) {
 		this.website = website;
 	}
-	public String getStatus() {
+	public char getStatus() {
 		return status;
 	}
-	public void setStatus(String status) {
+	public void setStatus(char status) {
 		this.status = status;
 	}
 	

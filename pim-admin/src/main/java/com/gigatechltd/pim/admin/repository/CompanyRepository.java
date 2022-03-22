@@ -93,4 +93,12 @@ public class CompanyRepository {
 		return result;
 	}
 	
+	public int updateCompany(CompanyModel cm){
+		String sql = "update t_companies set name = '"+cm.getName()+"', bank_id = '"+cm.getBankId()+"', address = '"+cm.getAddress()+"',"
+				+ " city = '"+cm.getCity()+"', state = '"+cm.getState()+"', country = '"+cm.getCountry()+"', phone_no = '"+cm.getPhoneNo()+"',"
+				+ " email = '"+cm.getEmail()+"', website = '"+cm.getWebsite()+"', status = '"+cm.getStatus()+"' where id ="+cm.getId();
+		int result= jdbcTemplate.update(sql);
+		return result;
+	}
+	
 }
