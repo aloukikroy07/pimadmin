@@ -101,16 +101,21 @@ public class CompanyController {
 	
 	@PostMapping({"/company/changeStatus"})
 	public String companyActivateOrDeactivate(@ModelAttribute("CompanyModel") CompanyModel companyModel){
-		int result = companyRepository.activateOrDeactivateCompany(companyModel);
+		companyRepository.activateOrDeactivateCompany(companyModel);
 		return "redirect:/company";
 	}
 	
+	@PostMapping({"/company/business_unit/changeStatus"})
+	public String businessUnitActivateOrDeactivate(@ModelAttribute("businessUnitModel") BusinessUnitModel bum){
+		companyRepository.activateOrDeactivateBusinessUnit(bum);
+		return "redirect:/company/business_unit";
+	}
 	
-	  @PostMapping({"/company/editCompany"})
-	  public String openCompanyEditModal(@ModelAttribute("CompanyModel") CompanyModel companyModel){ 
-		  companyRepository.updateCompany(companyModel); 
-		  return "redirect:/company"; 
-	  }
+	@PostMapping({"/company/editCompany"})
+	public String openCompanyEditModal(@ModelAttribute("CompanyModel") CompanyModel companyModel){ 
+	  companyRepository.updateCompany(companyModel); 
+	  return "redirect:/company"; 
+	}
 	 
 
 

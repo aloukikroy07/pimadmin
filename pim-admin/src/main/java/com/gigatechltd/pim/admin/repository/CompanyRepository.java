@@ -124,7 +124,27 @@ public class CompanyRepository {
 	}
 	
 	public int activateOrDeactivateCompany(CompanyModel cm){
-		String sql = "update t_companies set status = '"+cm.getStatus()+"' where id ="+cm.getId();
+		char status = cm.getStatus();
+		if (status == '1') {
+			status = '0';
+		}else {
+			status = '1';
+		}
+		
+		String sql = "update t_companies set status = '"+status+"' where id ="+cm.getId();
+		int result= jdbcTemplate.update(sql);
+		return result;
+	}
+	
+	public int activateOrDeactivateBusinessUnit(BusinessUnitModel bum){
+		String status = bum.getStatus();
+		if (status == "1") {
+			status = "0";
+		}else {
+			status = "1";
+		}
+		
+		String sql = "update t_business_units set status = '"+status+"' where id ="+bum.getId();
 		int result= jdbcTemplate.update(sql);
 		return result;
 	}
