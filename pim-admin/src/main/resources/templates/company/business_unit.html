@@ -75,6 +75,16 @@
                                 <span th:case="'1'" class="badge bg-success">Active</span>
                             </td>
                             <td>
+                            
+                            	<!-- For edit Modal: data shown in edit modal by jquery code is below -->
+                           			<input type="hidden" id="cId"    th:value="${businessUnit.id}">
+									<input type="hidden" id="cUnitName" th:value="${businessUnit.unitName}">
+									<input type="hidden" id="cShortName" th:value="${businessUnit.shortName}">
+									<input type="hidden" id="cCompanyName" th:value="${businessUnit.companyName}">
+									<input type="hidden" id="cHierarchy" th:value="${businessUnit.hierarchy}">
+									<input type="hidden" id="cStatus" th:value="${businessUnit.status}">
+											
+											
                                 <div class="filter">
                                 	  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
 	
@@ -283,7 +293,7 @@
                         </div>
                         <div class="col-6">
                             <div class="form-floating">
-                                <select class="form-select" id="floatingSelect" aria-label="State" th:name="status" >
+                                <select class="form-select" id="status" aria-label="State" th:name="status" >
                                     <option value="1">Active</option>
                                     <option value="0">Inactive</option>
                                 </select>
