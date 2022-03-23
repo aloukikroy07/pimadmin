@@ -54,7 +54,7 @@ public class CompanyRepository {
 	}
 	
 	public Map<Long, String> businessUnitDropdown(String companyId){
-		String sql = "select id, unit_name as unitName from t_business_units where company_Id= '"+companyId+"'";
+		String sql = "select id, unit_name as unitName from t_business_units where company_Id= '"+companyId+"' and status= '1'";
 		List<BusinessUnitModel> businessUnits= jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(BusinessUnitModel.class));
 		Map<Long, String> map=new HashMap<Long, String>();
 		for(int i=0; i<businessUnits.size(); i++) {
@@ -86,7 +86,7 @@ public class CompanyRepository {
 	}
 	
 	public Map<Long, String> parentFromBusinessUnit(){
-		String sql = "select id, unit_name from t_business_units where hierarchy=1 and company_id='"+companyId()+"'";
+		String sql = "select id, unit_name from t_business_units where hierarchy=1 and company_id='"+companyId()+"' and status='1'";
 		List <BusinessUnitModel>  businessUnit= jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(BusinessUnitModel.class));
 		Map<Long, String> map=new HashMap<Long, String>();
 		for(int i=0; i<businessUnit.size(); i++) {
@@ -96,7 +96,7 @@ public class CompanyRepository {
 	}
 	
 	public Map<Long, String> parentFromCompanyUnit(String businessUnit){
-		String sql = "select id, name from t_company_units where business_unit_id='"+businessUnit+"' and company_id='"+companyId()+"'";
+		String sql = "select id, name from t_company_units where business_unit_id='"+businessUnit+"' and company_id='"+companyId()+"' and status='1'";
 		List <CompanyUnitModel>  companyUnit= jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(CompanyUnitModel.class));
 		Map<Long, String> map=new HashMap<Long, String>();
 		for(int i=0; i<companyUnit.size(); i++) {
