@@ -10,6 +10,7 @@ import com.gigatechltd.pim.admin.model.CompanyModel;
 import com.gigatechltd.pim.admin.model.CompanyUnitModel;
 import com.gigatechltd.pim.admin.repository.CompanyRepository;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -31,7 +32,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class CompanyController {
 
-    @Autowired
+	@Autowired
     private CompanyRepository companyRepository;
 
 	@GetMapping({"/company"})
@@ -75,10 +76,10 @@ public class CompanyController {
 	
 	@GetMapping({"/company/unit"})
 	public String companyUnit(Model model, Model model1, CompanyUnitModel companyUnitModel){
-		model.addAttribute("companyUnits", companyRepository.getCompanyUnits());
+		long a = companyRepository.companyId();
+		model.addAttribute("companyUnits", companyRepository.getCompanyUnits(a));
 		model.addAttribute("companyUnitModel", companyUnitModel);
-		long a = companyRepository.companyId();		
-		model1.addAttribute("businessUnit", companyRepository.businessUnitDropdown(a));
+		model1.addAttribute("businessUnit", companyRepository.getAllBusinessUnit(a));
 		return "company/company_unit";
 	}
 	
@@ -91,16 +92,42 @@ public class CompanyController {
 	
 	@GetMapping({"/company/parent/find"})
 	@ResponseBody
-	public Map<Long, String> getParentUnit(@RequestParam String businessUnit) {
-		String hierarchy = companyRepository.getHierarchy(businessUnit);
+	public Map<Long, String> getParentUnit(@RequestParam String parentBusinessUnit, @RequestParam String businessUnit) {
+		String hierarchy = companyRepository.getHierarchy(parentBusinessUnit);
 		if(hierarchy.equals("1")) {
+			String businessUnitHierarchy = companyRepository.getHierarchy(businessUnit);
+			if(businessUnitHierarchy.equals("1")) {
+				Map<Long, String> map = companyRepository.parentFromBusinessUnit();
+				return map;
+			}
+			else {
+				Map<Long, String> map = companyRepository.parentFromCompanyUnit(parentBusinessUnit);
+				return map;
+			}
+		}
+		else {
+			Map<Long, String> map = companyRepository.parentFromCompanyUnit(parentBusinessUnit);
+			return map;
+		}		
+	}
+	
+	@GetMapping({"/company/parentBusinessUnit/find"})
+	@ResponseBody
+	public Map<Long, String> getParentBusinessUnit(@RequestParam String businessUnit) {
+		String businessUnitHierarchy = companyRepository.getHierarchy(businessUnit);
+		if(businessUnitHierarchy.equals("1")) {
 			Map<Long, String> map = companyRepository.parentFromBusinessUnit();
 			return map;
 		}
 		else {
-			Map<Long, String> map = companyRepository.parentFromCompanyUnit(businessUnit);
+			long a = companyRepository.companyId();
+			List <BusinessUnitModel>  parentBusinessUnit=companyRepository.businessUnitDropdown(a);
+			Map<Long, String> map=new HashMap<Long, String>();
+			for(int i=0; i<parentBusinessUnit.size(); i++) {
+				map.put(parentBusinessUnit.get(i).getId(), parentBusinessUnit.get(i).getUnitName());
+			}
 			return map;
-		}
+		}		
 	}
 	
 	@PostMapping({"/company/changeStatus"})

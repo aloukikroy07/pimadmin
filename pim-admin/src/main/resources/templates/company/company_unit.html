@@ -322,7 +322,6 @@
                             <div class="form-floating">
                                 <select class="form-select" id="parentBusinessUnit" aria-label="State">
                                 	<option value="0" selected disabled>------Select Parent Business Unit------</option>
-                                	<option th:each="businessUnit:${businessUnit}" th:text="${businessUnit.unitName}" th:value="${businessUnit.id}"></option>
                                 </select>
                                 <label for="parentBusinessUnit">Parent Business Unit</label>
                             </div>
@@ -427,16 +426,22 @@
     
     <script>
 		$(document).ready(function() {
+			$("#businessUnit").on("change", function() {
+		    	sendRequest();
+		    });
+			
 		    $("#parentBusinessUnit").on("change", function() {
 		    	sendAjaxRequest();
 		    });
 		});
 		
 		var selectElem = $("#parentUnit");
+		var selectElem1 = $("#parentBusinessUnit");
 		
 		function sendAjaxRequest() {
 		    var parentBusinessUnit = $("#parentBusinessUnit").val();
-		    $.get( "/company/parent/find?businessUnit=" + parentBusinessUnit, function( data ) {
+		    var businessUnit = $("#businessUnit").val();
+		    $.get( "/company/parent/find?parentBusinessUnit=" + parentBusinessUnit+"&businessUnit="+businessUnit, function( data ) {
 		        $("#parentUnit").empty();
 		        //data.forEach(function(item, i) {
 		        //    var option = "<option value = " + item + ">" + item +  "</option>";
@@ -450,6 +455,26 @@
 		                text: name
 		            }).appendTo(selectElem);
 		        });
+		    });
+		};
+		
+		function sendRequest() {
+			var businessUnit = $("#businessUnit").val();
+		    $.get( "/company/parentBusinessUnit/find?businessUnit=" + businessUnit, function( data ) {
+		        $("#parentBusinessUnit").empty();
+		        //data.forEach(function(item, i) {
+		        //    var option = "<option value = " + item + ">" + item +  "</option>";
+		        //    $("#businessUnit").append(option);
+		        //});
+		        var listOfData = data;
+		        
+		        $.each(listOfData, function(id, name){
+		        	$("<option/>", {
+		                value: id,
+		                text: name
+		            }).appendTo(selectElem1);
+		        });
+		        sendAjaxRequest();
 		    });
 		};
 		
