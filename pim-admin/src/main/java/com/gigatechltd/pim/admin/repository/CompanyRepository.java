@@ -19,7 +19,7 @@ public class CompanyRepository {
 	private JdbcTemplate jdbcTemplate;
 	
 	public List<CompanyModel> getAllCompanies(){
-		String sql = "select id, name, address, city, country, phone_No as phoneNo, email, website, status from t_companies order by id desc";
+		String sql = "select id, name, address, city, country, phone_No as phoneNo, email, website, status, bank_id as bankId, state from t_companies order by id desc";
 		List <CompanyModel> companies = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(CompanyModel.class));
 		return companies;
 	}
@@ -148,7 +148,7 @@ public class CompanyRepository {
 	
 	public int activateOrDeactivateBusinessUnit(BusinessUnitModel bum){
 		String status = bum.getStatus();
-		if (status == "1") {
+		if (status.equals("1")) {
 			status = "0";
 		}else {
 			status = "1";
@@ -158,12 +158,20 @@ public class CompanyRepository {
 		int result= jdbcTemplate.update(sql);
 		return result;
 	}
-	
+		
 	public int updateCompany(CompanyModel cm){
 		String sql = "update t_companies set name = '"+cm.getName()+"', bank_id = '"+cm.getBankId()+"', address = '"+cm.getAddress()+"',"
 				+ " city = '"+cm.getCity()+"', state = '"+cm.getState()+"', country = '"+cm.getCountry()+"', phone_no = '"+cm.getPhoneNo()+"',"
 				+ " email = '"+cm.getEmail()+"', website = '"+cm.getWebsite()+"', status = '"+cm.getStatus()+"' where id ="+cm.getId();
 		int result= jdbcTemplate.update(sql);
+		return result;
+	}
+
+	public int updateBusinessUnit(BusinessUnitModel bum){
+		
+		String sql2 = "update t_business_units set unit_name = '"+bum.getUnitName()+"', short_name = '"+bum.getShortName()+"',"
+				+ "hierarchy = '"+bum.getHierarchy()+"', status = '"+bum.getStatus()+"' where id ="+bum.getId();
+		int result= jdbcTemplate.update(sql2);
 		return result;
 	}
 	

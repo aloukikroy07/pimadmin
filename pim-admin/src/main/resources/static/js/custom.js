@@ -24,7 +24,6 @@ function loadBusinessUnitEditData(el, dd){
 	editModal.querySelector('#id').value = parentNode.querySelector('#cId').value;
 	editModal.querySelector('#unitName').value = parentNode.querySelector('#cUnitName').value;
 	editModal.querySelector('#shortName').value = parentNode.querySelector('#cShortName').value;
-	editModal.querySelector('#companyName').value = parentNode.querySelector('#cCompanyName').value;
 	editModal.querySelector('#hierarchy').value = parentNode.querySelector('#cHierarchy').value;
 	editModal.querySelector('#status').value = parentNode.querySelector('#cStatus').value;
 		

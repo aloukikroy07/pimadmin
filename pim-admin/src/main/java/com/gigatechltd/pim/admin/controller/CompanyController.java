@@ -121,6 +121,10 @@ public class CompanyController {
 	  return "redirect:/company"; 
 	}
 	 
-
+	@PostMapping({"/company/business_unit/edit"})
+	public String editBusinessUnit(@ModelAttribute("businessUnitModel") BusinessUnitModel bum){ 
+	  companyRepository.updateBusinessUnit(bum); 
+	  return "redirect:/company"; 
+	}
 
 }
