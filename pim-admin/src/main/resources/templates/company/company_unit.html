@@ -307,23 +307,24 @@
                     </div>
 
                     <div class="modal-body row g-3">
-                    	
-                    	<div class="col-6">
-                            <div class="form-floating">
-                                <select class="form-select" id="company" aria-label="State" th:field="*{companyId}">
-                                	<option value="0" selected disabled>------Select Company------</option>
-                                    <option th:each="companyList:${companyList}" th:value="${companyList.id}" th:text="${companyList.name}"></option>
-                                </select>
-                                <label for="company">Company</label>
-                            </div>
-                        </div>
                         
                         <div class="col-6">
                             <div class="form-floating">
                                 <select class="form-select" id="businessUnit" aria-label="State" th:field="*{businessUnitId}">
                                 	<option value="0" selected disabled>------Select Business Unit------</option>
+                                	<option th:each="businessUnit:${businessUnit}" th:text="${businessUnit.unitName}" th:value="${businessUnit.id}"></option>
                                 </select>
                                 <label for="businessUnit">Business Unit</label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-6">
+                            <div class="form-floating">
+                                <select class="form-select" id="parentBusinessUnit" aria-label="State">
+                                	<option value="0" selected disabled>------Select Parent Business Unit------</option>
+                                	<option th:each="businessUnit:${businessUnit}" th:text="${businessUnit.unitName}" th:value="${businessUnit.id}"></option>
+                                </select>
+                                <label for="parentBusinessUnit">Parent Business Unit</label>
                             </div>
                         </div>
                         
@@ -426,39 +427,30 @@
     
     <script>
 		$(document).ready(function() {
-		    $("#company").on("change", function() {
-		    	sendAjaxRequest();
-		    });
-		    $("#businessUnit").on("change", function() {
+		    $("#parentBusinessUnit").on("change", function() {
 		    	sendAjaxRequest();
 		    });
 		});
 		
-		var selectElem = $("#businessUnit");
-		var selectElem1 = $("#companyUnit");
+		var selectElem = $("#parentUnit");
 		
 		function sendAjaxRequest() {
-		    var company = $("#company").val();
-		    $.get( "/company/business_unit/find?company=" + company, function( data ) {
-		        $("#businessUnit").empty();
+		    var parentBusinessUnit = $("#parentBusinessUnit").val();
+		    $.get( "/company/parent/find?businessUnit=" + parentBusinessUnit, function( data ) {
+		        $("#parentUnit").empty();
 		        //data.forEach(function(item, i) {
 		        //    var option = "<option value = " + item + ">" + item +  "</option>";
 		        //    $("#businessUnit").append(option);
 		        //});
 		        var listOfData = data;
 		        
-		        $.each(listOfData, function(id, unitName){
+		        $.each(listOfData, function(id, name){
 		        	$("<option/>", {
 		                value: id,
-		                text: unitName
+		                text: name
 		            }).appendTo(selectElem);
 		        });
-			    sendAjaxRequest1();
 		    });
-		};
-		
-		function sendAjaxRequest1() {
-			alert("Hello");
 		};
 		
 	</script>

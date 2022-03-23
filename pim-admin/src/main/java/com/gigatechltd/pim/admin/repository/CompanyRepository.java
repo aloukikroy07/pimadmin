@@ -46,7 +46,7 @@ public class CompanyRepository {
 		return a;
 	}
 	
-	public List<BusinessUnitModel> getAllBusinessUnit(){
+	public List<BusinessUnitModel> getAllBusinessUnit(long companyId){
 		String sql = "select t0.id, t0.unit_name as unitName, t1.name as companyName, t0.short_name as shortName,"
 				+ " t0.hierarchy, t0.status from t_business_units t0 inner join t_companies t1 on t0.company_id=t1.id order by t0.hierarchy asc";
 		List <BusinessUnitModel> businessUnits = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(BusinessUnitModel.class));
@@ -78,32 +78,42 @@ public class CompanyRepository {
 		return companyUnits;
 	}
 	
-	public Map<Long, String> parentDropDown(String companyId, String businessUnitId){
-		String sql = "select\r\n" + 
-				"(\r\n" + 
-				"case \r\n" + 
-				"when t0.hierarchy>1\r\n" + 
-				"then (select t10.id from t_company_units t10 where t10.business_unit_id= t0.id)\r\n" + 
-				"else t0.id\r\n" + 
-				"end) id,\r\n" + 
-				"(\r\n" + 
-				"case \r\n" + 
-				"when t0.hierarchy>1\r\n" + 
-				"then (select t10.name from t_company_units t10 where t10.business_unit_id= t0.id)\r\n" + 
-				"else t0.unit_name\r\n" + 
-				"end) name\r\n" + 
-				"from t_business_units t0\r\n" + 
-				"where t0.hierarchy<\r\n" + 
-				"(select \r\n" + 
-				"hierarchy\r\n" + 
-				"from t_business_units t0\r\n" + 
-				"where company_id='"+companyId+"' and id='"+businessUnitId+"') and t0.company_id='"+companyId+"'";
-		List <CompanyUnitModel> companyUnits = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(CompanyUnitModel.class));
+	public String getHierarchy(String businessUnitId){
+		String sql = "select hierarchy from t_business_units where id='"+businessUnitId+"'";
+		List <BusinessUnitModel>  hierarchy= jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(BusinessUnitModel.class));
+		String a = hierarchy.get(0).getHierarchy();
+		return a;
+	}
+	
+	public Map<Long, String> parentFromBusinessUnit(){
+		String sql = "select id, unit_name from t_business_units where hierarchy=1 and company_id='"+companyId()+"'";
+		List <BusinessUnitModel>  businessUnit= jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(BusinessUnitModel.class));
 		Map<Long, String> map=new HashMap<Long, String>();
-		for(int i=0; i<companyUnits.size(); i++) {
-			map.put(companyUnits.get(i).getId(), companyUnits.get(i).getName());
+		for(int i=0; i<businessUnit.size(); i++) {
+			map.put(businessUnit.get(i).getId(), businessUnit.get(i).getUnitName());
 		}
 		return map;
+	}
+	
+	public Map<Long, String> parentFromCompanyUnit(String businessUnit){
+		String sql = "select id, name from t_company_units where business_unit_id='"+businessUnit+"' and company_id='"+companyId()+"'";
+		List <CompanyUnitModel>  companyUnit= jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(CompanyUnitModel.class));
+		Map<Long, String> map=new HashMap<Long, String>();
+		for(int i=0; i<companyUnit.size(); i++) {
+			map.put(companyUnit.get(i).getId(), companyUnit.get(i).getName());
+		}
+		return map;
+	}
+	
+	public int addCompanyUnits(CompanyUnitModel companyUnitModel){
+		String sql = "insert into t_company_units(company_id, business_unit_id, parent_id, name, short_name, address, city, country, status, user_id) values('"+companyUnitModel.getCompanyId()+"','"+companyUnitModel.getBusinessUnitId()+"','"+companyUnitModel.getParentId()+"','"+companyUnitModel.getName()+"','"+companyUnitModel.getShortName()+"','"+companyUnitModel.getAddress()+"','"+companyUnitModel.getCity()+"','"+companyUnitModel.getCountry()+"','"+companyUnitModel.getStatus()+"',1)";
+		int result= jdbcTemplate.update(sql);
+		if(result==1) {
+			return 1;
+		}
+		else {
+			return 0;
+		}
 	}
 	
 	public List<CompanyUnitModel> companyUnitsDropDown(){

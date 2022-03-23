@@ -54,7 +54,8 @@ public class CompanyController {
 	
 	@GetMapping({"/company/business_unit"})
 	public String businessUnit(Model model, BusinessUnitModel businessUnitModel) {
-		model.addAttribute("businessUnits", companyRepository.getAllBusinessUnit());
+		long a = companyRepository.companyId();
+		model.addAttribute("businessUnits", companyRepository.getAllBusinessUnit(a));
 		model.addAttribute("businessUnitModel", businessUnitModel);
 		
 		return "company/business_unit";
@@ -76,27 +77,30 @@ public class CompanyController {
 	public String companyUnit(Model model, Model model1, CompanyUnitModel companyUnitModel){
 		model.addAttribute("companyUnits", companyRepository.getCompanyUnits());
 		model.addAttribute("companyUnitModel", companyUnitModel);
-		model1.addAttribute("companyList", companyRepository.companyId());
+		long a = companyRepository.companyId();		
+		model1.addAttribute("businessUnit", companyRepository.getAllBusinessUnit(a));
 		return "company/company_unit";
 	}
 	
 	@PostMapping({"/company/unit/add"})
 	public String addCompanyUnit(@ModelAttribute("CompanyUnitModel") CompanyUnitModel companyUnitModel){
+		companyUnitModel.setCompanyId(companyRepository.companyId());
+		int i = companyRepository.addCompanyUnits(companyUnitModel);
 		return "redirect:/company/unit";
-	}
-	
-	@GetMapping({"/company/business_unit/find"})
-	@ResponseBody
-	public Map<Long, String> getBusinessUnit(@RequestParam String company) {
-		Map<Long, String> businessUnits = companyRepository.businessUnitDropdown(company);
-		return businessUnits;
 	}
 	
 	@GetMapping({"/company/parent/find"})
 	@ResponseBody
-	public Map<Long, String> getParentUnit(@RequestParam String businessUnit, @RequestParam String companyId) {
-		Map<Long, String> parentUnit = companyRepository.parentDropDown(companyId, businessUnit);
-		return parentUnit;
+	public Map<Long, String> getParentUnit(@RequestParam String businessUnit) {
+		String hierarchy = companyRepository.getHierarchy(businessUnit);
+		if(hierarchy.equals("1")) {
+			Map<Long, String> map = companyRepository.parentFromBusinessUnit();
+			return map;
+		}
+		else {
+			Map<Long, String> map = companyRepository.parentFromCompanyUnit(businessUnit);
+			return map;
+		}
 	}
 	
 	@PostMapping({"/company/changeStatus"})
