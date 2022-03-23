@@ -93,6 +93,19 @@
 
                 <div class="col-12">
                     <div class="form-floating">
+                        <select class="form-select" id="floatingSelect" aria-label="State" th:field="*{companyUnitId}">
+                            <option
+                                    th:each="companyUnits: ${CompanyUnits}"
+                                    th:value="${companyUnits.id}"
+                                    th:text="${companyUnits.name}">
+                            </option>
+                        </select>
+                        <label for="floatingSelect">Company Unit</label>
+                    </div>
+                </div>
+                
+                <div class="col-12">
+                    <div class="form-floating">
                         <select class="form-select" id="floatingSelect" aria-label="State" th:field="*{roleId}">
                             <option
                                     th:each="role: ${roles}"

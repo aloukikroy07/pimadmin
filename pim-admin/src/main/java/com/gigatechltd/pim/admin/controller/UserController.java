@@ -2,9 +2,12 @@ package com.gigatechltd.pim.admin.controller;
 
 import com.gigatechltd.pim.admin.configuration.Config;
 import com.gigatechltd.pim.admin.model.UserModel;
+import com.gigatechltd.pim.admin.repository.CompanyRepository;
 import com.gigatechltd.pim.admin.service.menu.MenuService;
 import com.gigatechltd.pim.admin.service.user.UserService;
 import com.gigatechltd.pim.admin.utils.LogUtils;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +19,10 @@ import javax.validation.Valid;
 
 @Controller
 public class UserController {
-
+	
+	@Autowired
+	private CompanyRepository companyRepository;
+	
     private final UserService userService;
     private final MenuService menuService;
 
@@ -28,15 +34,16 @@ public class UserController {
 
     @GetMapping({"/users"})
     public String userListView(Model model) {
-        model.addAttribute("users", userService.findAll());
+        model.addAttribute("users", userService.findAll());        
         return "user/user_list";
     }
 
     @GetMapping({"/users/add"})
-    public String userAddView(Model model) {
+    public String userAddView(Model model, Model model1) {
         UserModel userModel = new UserModel();
         model.addAttribute("userModel", userModel);
         model.addAttribute("roles", menuService.findAllRoles());
+        model1.addAttribute("CompanyUnits", companyRepository.companyUnitDropDown());
         return "user/user_add";
     }
 

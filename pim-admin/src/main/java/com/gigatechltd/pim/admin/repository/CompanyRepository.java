@@ -75,6 +75,12 @@ public class CompanyRepository {
 		return companyUnits;
 	}
 	
+	public List<CompanyUnitModel> companyUnitDropDown(){
+		String sql = "select id, name from t_company_units where company_id='"+companyId()+"'";
+		List <CompanyUnitModel> companyUnits = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(CompanyUnitModel.class));
+		return companyUnits;
+	}
+	
 	public String getHierarchy(String businessUnitId){
 		String sql = "select hierarchy from t_business_units where id='"+businessUnitId+"'";
 		List <BusinessUnitModel>  hierarchy= jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(BusinessUnitModel.class));
@@ -111,12 +117,6 @@ public class CompanyRepository {
 		else {
 			return 0;
 		}
-	}
-	
-	public List<CompanyUnitModel> companyUnitsDropDown(){
-		String sql = "select id, name from t_company_units where company_id='1' and business_unit_id='1'";
-		List <CompanyUnitModel> companyUnits = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(CompanyUnitModel.class));
-		return companyUnits;
 	}
 	
 	public int addBusinessUnits(BusinessUnitModel businessUnitModel){
