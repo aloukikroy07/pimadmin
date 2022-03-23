@@ -53,14 +53,10 @@ public class CompanyRepository {
 		return businessUnits;
 	}
 	
-	public Map<Long, String> businessUnitDropdown(String companyId){
+	public List<BusinessUnitModel> businessUnitDropdown(long companyId){
 		String sql = "select id, unit_name as unitName from t_business_units where company_Id= '"+companyId+"' and status= '1'";
 		List<BusinessUnitModel> businessUnits= jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(BusinessUnitModel.class));
-		Map<Long, String> map=new HashMap<Long, String>();
-		for(int i=0; i<businessUnits.size(); i++) {
-			map.put(businessUnits.get(i).getId(), businessUnits.get(i).getUnitName());
-		}
-		return map;
+		return businessUnits;
 	}
 	
 	public List<CompanyUnitModel> getCompanyUnits(){
