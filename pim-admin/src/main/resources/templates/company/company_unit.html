@@ -2,6 +2,7 @@
 <html layout:decorator="layout" lang="en" xmlns:layout="http://www.w3.org/1999/xhtml">
 <head>
     <title>Company Unit</title>
+    <script type="text/javascript" src="/js/custom.js"></script>
 </head>
 
 <body>
@@ -76,14 +77,24 @@
                                 <span th:case="'1'" class="badge bg-success">Active</span>
                             </td>
                             <td>
+                            
+                            	<!-- For edit Modal: data shown in edit modal by jquery code is below -->
+                           			<input type="hidden" id="cId"    th:value="${companyUnits.id}">
+									<input type="hidden" id="cBusinessUnit" th:value="${companyUnits.businessUnitId}">
+									<input type="hidden" id="cParentUnit" th:value="${companyUnits.parentId}">
+									<input type="hidden" id="cUnitName" th:value="${companyUnits.name}">
+									<input type="hidden" id="cShortName" th:value="${companyUnits.shortName}">
+									<input type="hidden" id="cStatus" th:value="${companyUnits.status}">
+                            
                                 <div class="filter">
                                     <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
 
                                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                         <li>
                                             <a class="dropdown-item badge bg-secondary"
-                                               data-bs-toggle="modal"
-                                               th:data-bs-target="'#editcompanyUnitsModal'+${companyUnits.id}">Edit
+                                               	data-bs-toggle="modal" href="#"
+                                               	onclick="loadCompanyUnitEditData(this)"
+                                              	data-bs-target="#editCompanyUnitModal">Edit
                                             </a>
                                         </li>
                                         <li th:switch="${companyUnits.status}">
@@ -285,6 +296,7 @@
                                 aria-label="Close"></button>
                     </div>
                     <div class="modal-body row g-3">
+                    	<input type="hidden" id="id" name="id">
                         <div class="col-6">
                             <div class="form-floating">
                                 <select class="form-select" id="businessUnit" aria-label="State" th:field="*{businessUnitId}">
@@ -326,7 +338,7 @@
                         </div>
                         <div class="col-6">
                             <div class="form-floating">
-                                <select class="form-select" id="floatingSelect" aria-label="State" th:field="*{status}">
+                                <select class="form-select" id="status" aria-label="State" th:field="*{status}">
                                     <option value="1">Active</option>
                                     <option value="0">Inactive</option>
                                 </select>
