@@ -89,7 +89,7 @@
                                         <li th:switch="${companyUnits.status}">
 	                                            <a class="dropdown-item badge bg-secondary"
 	                                               	data-bs-toggle="modal" href="#"
-	                                               	th:data-bs-target="'#activateModal'+${companyUnits.name}">
+	                                               	th:data-bs-target="'#activateModal'+${companyUnits.id}">
 	                                               	<span th:case="'0'">Activate</span>
 	                                				<span th:case="'1'">Deactivate</span>
 	                                            </a>
@@ -97,7 +97,7 @@
                                     </ul>
 
                                     <!-- Activate / Deactivate Confirmation Dialog -->
-                                    <div class="modal fade" th:id="'activateModal'+${companyUnits.name}" tabindex="-1">
+                                    <div class="modal fade" th:id="'activateModal'+${companyUnits.id}" tabindex="-1">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
