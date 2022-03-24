@@ -79,7 +79,7 @@ public class CompanyController {
 		long a = companyRepository.companyId();
 		model.addAttribute("companyUnits", companyRepository.getCompanyUnits(a));
 		model.addAttribute("companyUnitModel", companyUnitModel);
-		model1.addAttribute("businessUnit", companyRepository.getAllBusinessUnit(a));
+		model1.addAttribute("businessUnit", companyRepository.businessUnitDropdown(a));
 		return "company/company_unit";
 	}
 	
