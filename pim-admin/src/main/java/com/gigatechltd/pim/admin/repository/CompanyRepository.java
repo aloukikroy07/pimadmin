@@ -155,6 +155,19 @@ public class CompanyRepository {
 		int result= jdbcTemplate.update(sql);
 		return result;
 	}
+	public int activateOrDeactivateCompanyUnit(CompanyUnitModel cum){
+		String status = cum.getStatus();
+		if (status.equals("1")) {
+			status = "0";
+		}else {
+			status = "1";
+		}
+		
+		String sql = "update t_company_units set status = '"+status+"' where id ="+cum.getId();
+		int result= jdbcTemplate.update(sql);
+		return result;
+	}
+	
 		
 	public int updateCompany(CompanyModel cm){
 		String sql = "update t_companies set name = '"+cm.getName()+"', bank_id = '"+cm.getBankId()+"', address = '"+cm.getAddress()+"',"

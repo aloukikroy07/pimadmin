@@ -142,6 +142,13 @@ public class CompanyController {
 		return "redirect:/company/business_unit";
 	}
 	
+	@PostMapping({"/company/company_unit/changeStatus"})
+	public String companyUnitActivateOrDeactivate(@ModelAttribute("CompanyModel") CompanyUnitModel cum){
+		companyRepository.activateOrDeactivateCompanyUnit(cum);
+		return "redirect:/company/unit";
+		
+	}
+	
 	@PostMapping({"/company/editCompany"})
 	public String openCompanyEditModal(@ModelAttribute("CompanyModel") CompanyModel companyModel){ 
 	  companyRepository.updateCompany(companyModel); 
