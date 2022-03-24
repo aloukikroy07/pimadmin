@@ -143,7 +143,7 @@ public class CompanyController {
 	}
 	
 	@PostMapping({"/company/company_unit/changeStatus"})
-	public String companyUnitActivateOrDeactivate(@ModelAttribute("CompanyModel") CompanyUnitModel cum){
+	public String companyUnitActivateOrDeactivate(@ModelAttribute("CompanyUnitModel") CompanyUnitModel cum){
 		companyRepository.activateOrDeactivateCompanyUnit(cum);
 		return "redirect:/company/unit";
 		
@@ -160,5 +160,6 @@ public class CompanyController {
 	  companyRepository.updateBusinessUnit(bum); 
 	  return "redirect:/company/business_unit";
 	}
+	
 
 }

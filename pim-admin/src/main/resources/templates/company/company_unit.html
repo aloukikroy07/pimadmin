@@ -90,13 +90,14 @@
                                     <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
 
                                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                        <li>
+                                    <!-- End Basic Modal
+                                    	<li>
                                             <a class="dropdown-item badge bg-secondary"
                                                	data-bs-toggle="modal" href="#"
                                                	onclick="loadCompanyUnitEditData(this)"
                                               	data-bs-target="#editCompanyUnitModal">Edit
                                             </a>
-                                        </li>
+                                        </li><!-- End Basic Modal-->
                                         <li th:switch="${companyUnits.status}">
 	                                            <a class="dropdown-item badge bg-secondary"
 	                                               	data-bs-toggle="modal" href="#"
@@ -282,7 +283,7 @@
         </div>
 
     </div><!-- End Basic Modal-->
-    <!--Start Edit Company Unit Modal Dialog -->
+    <!--Start Edit Company Unit Modal Dialog 
     <div class="modal fade" id="editCompanyUnitModal" role="dialog"
          tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
@@ -300,18 +301,10 @@
                         <div class="col-6">
                             <div class="form-floating">
                                 <select class="form-select" id="businessUnit" aria-label="State" th:field="*{businessUnitId}">
-                                	<option value="0" selected disabled>------Select Business Unit------</option>
+                                	<option value="0" selected disabled></option>
                                 	<option th:each="businessUnit:${businessUnit}" th:text="${businessUnit.unitName}" th:value="${businessUnit.id}"></option>
                                 </select>
                                 <label for="businessUnit">Business Unit</label>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="form-floating">
-                                <select class="form-select" id="parentUnit" aria-label="State" th:field="*{parentId}">
-                                	<option value="0" selected disabled>------Select Parent Unit------</option>
-                                </select>
-                                <label for="parentUnit">Parent Unit</label>
                             </div>
                         </div>
                         <div class="col-6">

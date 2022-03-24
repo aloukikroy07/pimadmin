@@ -29,17 +29,16 @@ function loadBusinessUnitEditData(el, dd){
 		
 }
 
-function loadCompanyUnitEditData(el, dd){	
+/*function loadCompanyUnitEditData(el, dd){	
 	var editModal = document.getElementById('editCompanyUnitModal');
 	var parentNode = el.parentNode.parentNode.parentNode.parentNode;
 	
 	editModal.querySelector('#id').value = parentNode.querySelector('#cId').value;
 	editModal.querySelector('#businessUnit').value = parentNode.querySelector('#cBusinessUnit').value;
-	editModal.querySelector('#parentUnit').value = parentNode.querySelector('#cParentUnit').value;
 	editModal.querySelector('#unit_name').value = parentNode.querySelector('#cUnitName').value;
 	editModal.querySelector('#short_name').value = parentNode.querySelector('#cShortName').value;
 	editModal.querySelector('#status').value = parentNode.querySelector('#cStatus').value;
 		
-}
+}*/
 
 

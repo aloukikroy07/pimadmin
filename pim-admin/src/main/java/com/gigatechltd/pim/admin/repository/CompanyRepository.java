@@ -109,7 +109,10 @@ public class CompanyRepository {
 	}
 	
 	public int addCompanyUnits(CompanyUnitModel companyUnitModel){
-		String sql = "insert into t_company_units(company_id, business_unit_id, parent_id, name, short_name, address, city, country, status, user_id) values('"+companyUnitModel.getCompanyId()+"','"+companyUnitModel.getBusinessUnitId()+"','"+companyUnitModel.getParentId()+"','"+companyUnitModel.getName()+"','"+companyUnitModel.getShortName()+"','"+companyUnitModel.getAddress()+"','"+companyUnitModel.getCity()+"','"+companyUnitModel.getCountry()+"','"+companyUnitModel.getStatus()+"',1)";
+		String sql = "insert into t_company_units(company_id, business_unit_id, parent_id, name, short_name, address, city, country, status, user_id) "
+				+ "values('"+companyUnitModel.getCompanyId()+"','"+companyUnitModel.getBusinessUnitId()+"','"+companyUnitModel.getParentId()+"','"
+				+ companyUnitModel.getName()+"','"+companyUnitModel.getShortName()+"','"+companyUnitModel.getAddress()+"','"+companyUnitModel.getCity()
+				+"','"+companyUnitModel.getCountry()+"','"+companyUnitModel.getStatus()+"',1)";
 		int result= jdbcTemplate.update(sql);
 		if(result==1) {
 			return 1;
