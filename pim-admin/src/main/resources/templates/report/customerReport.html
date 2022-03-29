@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html layout:decorator="layout" lang="en" xmlns:layout="http://www.w3.org/1999/xhtml">
+	<head>
+	    <title>Cutomer Report</title>
+	    <script type="text/javascript" src="/js/custom.js"></script>
+	</head>
+	<body>
+		<section layout:fragment="content">
+		    <div class="pagetitle">
+		        <h1>Customer Report</h1>
+		        <nav>
+		            <ol class="breadcrumb">
+		                <li class="breadcrumb-item"><a href="/"><i class="bi bi-house-door"></i></a></li>
+		                <li class="breadcrumb-item active">Customer Report</li>
+		            </ol>
+		        </nav>
+		    </div><!-- End Page Title -->
+		
+		    <div>
+		    	<form method="post" th:object="${CustomerProfile}" th:action="@{/customer/report/generate}">
+				  <div class="form-group">
+				  	<div>
+				  		<label for="exampleInputEmail1">IDTP VID</label>
+				    	<input type="email" class="form-control" id="idtpVid" aria-describedby="emailHelp">
+				  	</div>
+				  	<div>
+				  		<label for="exampleInputEmail1">NID</label>
+				    	<input type="email" class="form-control" id="nid" >
+				  	</div>
+				  </div>
+				  <div class="form-group">
+				  	<div>
+				  		<label for="exampleInputEmail1">Mobile No.</label>
+				    	<input type="email" class="form-control" id="idtpVid" >
+				  	</div>
+				  	<div>
+				  		<label for="exampleInputEmail1">Date of Birth</label>
+				    	<input type="email" class="form-control" id="idtpVid" aria-describedby="emailHelp" >
+				  	</div>
+				  </div>
+				  <button type="submit" class="btn btn-primary">Go</button>
+				</form>
+		    </div>
+		</section>
+	</body>
+</html>
