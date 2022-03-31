@@ -27,22 +27,9 @@ public class ReportController {
 		return "report/customerReport";
 	}
 	@PostMapping({"/customer/report/generate"})
-	public String downloadCustomerReport(HttpServletResponse response) throws IOException {
-		reportService.exportJasperReport(response);
+	public String generateCustomerReport(HttpServletResponse response, CustomerProfile cp) throws IOException {
+		reportService.exportJasperReport(response, cp);
 		return "";
 	}
 	
-//	@PostMapping("/customer/report/generate")
-//    public void exportToPDF(HttpServletResponse response) throws DocumentException, IOException {
-//        response.setContentType("application/pdf");
-//        //DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
-//       // String currentDateTime = dateFormatter.format(new Date());
-//         
-//        String headerKey = "Content-Disposition";
-//        String headerValue = "attachment; filename=Customer Report.pdf";
-//        response.setHeader(headerKey, headerValue);
-//         
-//        List<CustomerProfile> listUsers = reportService.getCpData();
-//         
-//    }
 }
