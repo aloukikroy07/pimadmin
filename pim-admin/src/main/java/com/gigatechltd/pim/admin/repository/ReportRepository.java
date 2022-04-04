@@ -1,37 +1,66 @@
 package com.gigatechltd.pim.admin.repository;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
-import java.util.Locale;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import com.pim.PIMProject.Model.Request.CustomerProfile;
+
+import com.gigatechltd.pim.admin.model.CustomerProfile;
 
 @Repository
 public class ReportRepository {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
-//	public List<TestCF> getCustomerProfile(){
-//		String sql = "select customer_name as cusname, idtp_vid as idtp, email, mobile_no as mobile, tin_no as tin, nid from t_customer_profiles";
-//		List<TestCF> customerProfile= jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(TestCF.class));
-//		return customerProfile;
-//	}
+	public Timestamp timestampFormat(String dataTime) {
+		Timestamp result = null;
+		try {
+		    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss.SSS");
+		    Date parsedDate = dateFormat.parse(dataTime);
+		    result = new java.sql.Timestamp(parsedDate.getTime());
+		} catch(Exception e) { 
+			
+		}
+		return result;
+	}
+	public String timestampFormatInString(String dateTime) {
+		String formattedDate = null;
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy h:mm:ss a");
+			formattedDate = sdf.format(dateTime);
+		} catch(Exception e) { 
+			
+		}
+		return formattedDate;
+	}
+	public String timestampFormatInString(Date date) {
+		String formattedDate = null;
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy h:mm:ss a");
+			formattedDate = sdf.format(date);
+		} catch(Exception e) { 
+			
+		}
+		return formattedDate;
+	}
 	
-	public List<CustomerProfile> getCustomerProfile(CustomerProfile cp){
-		String idtpVid = cp.getIdtpPin().equalsIgnoreCase("") ? null : cp.getIdtpPin();
-		String nID = cp.getNid().equalsIgnoreCase("") ? null : cp.getNid();
-		String mobileNo = cp.getMobileNo().equalsIgnoreCase("") ? null : cp.getMobileNo();
-		String dob=cp.getBirthDate().equals("") ? null : new SimpleDateFormat("dd-MM-yyyy").format(cp.getBirthDate());
+	public List<CustomerProfile> getCustomerProfile(HttpServletRequest request, CustomerProfile cp){
 		
-		String sql = "select customer_name as customerName, idtp_vid as idtpPin, email, mobile_no as mobileNo, tin_no as tinNo, nid from t_customer_profiles "
-				+ "where (idtp_vid = nvl("+idtpVid+", idtp_vid) or idtp_vid is null) or (nid = nvl("+nID+", nid) or nid is null) "
-				+ "or (mobile_no = nvl("+mobileNo+", mobile_no) or mobile_no is null) or (birth_date = nvl(TO_DATE('"+dob+"', 'DD-MM-YY'), birth_date) or birth_date is null)";
+		String toDate = request.getParameter("toDate");
+		String fromDate = request.getParameter("fromDate");
+		String now = timestampFormatInString(new Date());
+		
+		String sql = "select ca.account_no as primaryAccountNo, cp.customer_name as customerName, cp.idtp_vid as idtpPin, cp.email, cp.mobile_no as mobileNo, cp.tin_no as tinNo, cp.nid" 
+				+" from t_customer_profiles cp join t_customer_accounts ca on ca.profile_id = cp.id"
+				;//+ "where created_at between (nvl("+toDate+", "+now+"),  nvl("+fromDate+", "+now+"))";
 		
 		List<CustomerProfile> customerProfile= jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(CustomerProfile.class));
 		return customerProfile;

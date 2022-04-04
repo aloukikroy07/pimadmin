@@ -20,22 +20,12 @@
 		    	<form method="post" th:object="${CustomerProfile}" th:action="@{/customer/report/generate}">
 				  <div class="form-group">
 				  	<div>
-				  		<label for="exampleInputEmail1">IDTP VID</label>
-				    	<input type="text" class="form-control" id="idtpVid" name="idtpPin" aria-describedby="emailHelp">
+				  		<label for="exampleInputEmail1">From</label>
+				    	<input type="datetime-local" class="form-control" id="toDate" aria-describedby="emailHelp" name="toDate">
 				  	</div>
 				  	<div>
-				  		<label for="exampleInputEmail1">NID</label>
-				    	<input type="text" class="form-control" id="nid" name="nid">
-				  	</div>
-				  </div>
-				  <div class="form-group">
-				  	<div>
-				  		<label for="exampleInputEmail1">Mobile No.</label>
-				    	<input type="text" class="form-control" id="mobileNo" name="mobileNo">
-				  	</div>
-				  	<div>
-				  		<label for="exampleInputEmail1">Date of Birth</label>
-				    	<input type="date" class="form-control" id="birthDate" aria-describedby="emailHelp" name="birthDate">
+				  		<label for="exampleInputEmail1">To</label>
+				    	<input type="datetime-local" class="form-control" id="fromDate" aria-describedby="emailHelp" name="fromDate">
 				  	</div>
 				  </div>
 				  <button type="submit" class="btn btn-primary">Generate Report</button>
