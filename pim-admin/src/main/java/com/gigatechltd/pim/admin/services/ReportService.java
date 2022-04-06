@@ -44,26 +44,15 @@ public class ReportService {
 	
 	@Autowired
 	ReportRepository reportRepository;
+	
+	@Autowired
+	Connection getDataSource;
     
     public void exportJasperReport(HttpServletRequest request, HttpServletResponse response, CustomerProfile cp) throws IOException {
 		JRBeanCollectionDataSource jrbcd = null;
 		File template;
 		String fromDate = request.getParameter("fromDate");
 		String toDate = request.getParameter("toDate");
-		Connection connection = null ;
-				
-		try {
-			Class.forName("com.oracle.jdbc.Driver");
-		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		try {
-			connection = DriverManager.getConnection("jdbc:oracle:thin:@192.168.70.55:1521/APEXDB.GIGATECHLTD.COM?user=pimuser&password=pimuser");
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 		
 		try {
 			List<CustomerProfile> customerProfileDatoDateta = reportRepository.getCustomerProfile(request, cp);
@@ -74,9 +63,9 @@ public class ReportService {
 		    parameters.put("fromDate", fromDate);
 		    parameters.put("toDate",  toDate);
 		        
-//		    JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, jbcd);
+//		    JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, jrbcd);
 //		    JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
-		    JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, connection);
+		    JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, getDataSource);
 		    
 		    JRPdfExporter pdfExporter = new JRPdfExporter();
 		    pdfExporter.setExporterInput(new SimpleExporterInput(jasperPrint));
