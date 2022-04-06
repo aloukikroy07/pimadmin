@@ -4,6 +4,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -42,20 +45,38 @@ public class ReportService {
 	@Autowired
 	ReportRepository reportRepository;
     
-    public String exportJasperReport(HttpServletRequest request, HttpServletResponse response, CustomerProfile cp) throws IOException {
-		String path = "C:\\Users\\User\\Downloads";
-		String destFileName = path+"\\report.html";
+    public void exportJasperReport(HttpServletRequest request, HttpServletResponse response, CustomerProfile cp) throws IOException {
 		JRBeanCollectionDataSource jrbcd = null;
 		File template;
+		String fromDate = request.getParameter("fromDate");
+		String toDate = request.getParameter("toDate");
+		Connection connection = null ;
+				
 		try {
-			List<CustomerProfile> customerProfileData = reportRepository.getCustomerProfile(request, cp);
-			jrbcd = new JRBeanCollectionDataSource(customerProfileData);
+			Class.forName("com.oracle.jdbc.Driver");
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			connection = DriverManager.getConnection("jdbc:oracle:thin:@192.168.70.55:1521/APEXDB.GIGATECHLTD.COM?user=pimuser&password=pimuser");
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try {
+			List<CustomerProfile> customerProfileDatoDateta = reportRepository.getCustomerProfile(request, cp);
+			//jrbcd = new JRBeanCollectionDataSource(customerProfileData);
 			template = ResourceUtils.getFile("classpath:CustomerReport.jrxml");
 			JasperReport jasperReport = JasperCompileManager.compileReport(template.getAbsolutePath());
 			Map<String, Object> parameters = new HashMap<>();
-		    parameters.put("report1", "customer");
+		    parameters.put("fromDate", fromDate);
+		    parameters.put("toDate",  toDate);
 		        
-		    JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, jrbcd);
+//		    JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, jbcd);
+//		    JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
+		    JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, connection);
 		    
 		    JRPdfExporter pdfExporter = new JRPdfExporter();
 		    pdfExporter.setExporterInput(new SimpleExporterInput(jasperPrint));
@@ -72,17 +93,17 @@ public class ReportService {
 		    responseOutputStream.close();
 		    pdfReportStream.close();
 		    
-		    Log.info("Report downloaded in path: "+destFileName);
-		    System.out.println("Report downloaded in path: "+destFileName);
+		    Log.info("Customer Report Generated !");
 		    
 		} catch (FileNotFoundException | JRException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		
-		return path;
 	}
+
+
+	
 	
 	
 }

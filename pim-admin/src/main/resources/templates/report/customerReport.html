@@ -19,13 +19,14 @@
 		    <div>
 		    	<form method="post" th:object="${CustomerProfile}" th:action="@{/customer/report/generate}">
 				  <div class="form-group">
+				  	
 				  	<div>
 				  		<label for="exampleInputEmail1">From</label>
-				    	<input type="datetime-local" class="form-control" id="toDate" aria-describedby="emailHelp" name="toDate">
+				    	<input type="date" class="form-control" id="fromDate" aria-describedby="emailHelp" name="fromDate">
 				  	</div>
 				  	<div>
 				  		<label for="exampleInputEmail1">To</label>
-				    	<input type="datetime-local" class="form-control" id="fromDate" aria-describedby="emailHelp" name="fromDate">
+				    	<input type="date" class="form-control" id="toDate" aria-describedby="emailHelp" name="toDate">
 				  	</div>
 				  </div>
 				  <button type="submit" class="btn btn-primary">Generate Report</button>

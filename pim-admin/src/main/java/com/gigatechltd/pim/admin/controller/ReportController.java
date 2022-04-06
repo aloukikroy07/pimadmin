@@ -1,5 +1,6 @@
 package com.gigatechltd.pim.admin.controller;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,9 +30,8 @@ public class ReportController {
 	}
 	
 	@PostMapping({"/customer/report/generate"})
-	public String generateCustomerReport(HttpServletRequest request, HttpServletResponse response, CustomerProfile cp) throws IOException {
+	public void generateCustomerReport(HttpServletRequest request, HttpServletResponse response, CustomerProfile cp) throws IOException, ClassNotFoundException, SQLException {
 		reportService.exportJasperReport(request, response, cp);
-		return "";
 	}
 	
 	

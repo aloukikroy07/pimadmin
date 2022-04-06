@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.8.0.final using JasperReports Library version 6.8.0-2ed8dfabb690ff337a5797129f2cd92902b0c87b  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4_1" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4b28dd52-5817-4642-add6-3c383d2048cb">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="OracleDB55DataAdapter "/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="fromDate" class="java.lang.String"/>
+	<parameter name="toDate" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[]]>
+		<![CDATA[select ca.account_no as primaryAccountNo, cp.customer_name as customerName, cp.idtp_vid as idtpPin, cp.email, cp.mobile_no as mobileNo, cp.tin_no as tinNo, cp.nid 
+from t_customer_profiles cp join t_customer_accounts ca on ca.profile_id = cp.id
+where to_char(cp.created_at,'YYYY-MM-DD')>= $P{fromDate} and to_char(cp.created_at,'YYYY-MM-DD')<= $P{toDate}]]>
 	</queryString>
 	<field name="primaryAccountNo" class="java.lang.String"/>
 	<field name="customerName" class="java.lang.String"/>
@@ -64,12 +68,6 @@
 				</reportElement>
 				<text><![CDATA[Email]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="61" y="0" width="100" height="30" uuid="6285c78f-6005-4653-ad1d-20bec3300c00">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2513ef62-e25c-4427-9276-aa2700f81186"/>
-				</reportElement>
-				<text><![CDATA[primaryAccountNo]]></text>
-			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
@@ -115,6 +113,14 @@
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2513ef62-e25c-4427-9276-aa2700f81186"/>
 				</reportElement>
 				<textFieldExpression><![CDATA[$F{primaryAccountNo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="70" y="74" width="100" height="30" uuid="c45bea67-75fe-4c4e-8fa7-4e838d621b2a"/>
+				<textFieldExpression><![CDATA[$P{fromDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="384" y="83" width="100" height="30" uuid="0b0e8f2f-cde4-4317-bfe1-fb1daf431862"/>
+				<textFieldExpression><![CDATA[$P{toDate}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
