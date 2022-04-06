@@ -57,7 +57,7 @@ public class ReportService {
 		try {
 			List<CustomerProfile> customerProfileDatoDateta = reportRepository.getCustomerProfile(request, cp);
 			//jrbcd = new JRBeanCollectionDataSource(customerProfileData);
-			template = ResourceUtils.getFile("classpath:DatewiseUserRegistration.jrxml");
+			template = ResourceUtils.getFile("classpath:/report_template/DatewiseUserRegistration.jrxml");
 			JasperReport jasperReport = JasperCompileManager.compileReport(template.getAbsolutePath());
 			Map<String, Object> parameters = new HashMap<>();
 		    parameters.put("fromDate", fromDate);
