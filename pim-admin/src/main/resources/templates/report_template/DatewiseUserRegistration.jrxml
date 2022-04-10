@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.19.0.final using JasperReports Library version 6.19.0-646c68931cebf1a58bc65c4359d1f0ca223c5e94  -->
+<!-- Created with Jaspersoft Studio version 6.8.0.final using JasperReports Library version 6.8.0-2ed8dfabb690ff337a5797129f2cd92902b0c87b  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Datewise User Registration" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6a5834a2-1786-481a-8d06-4a8d421257b9">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="192.168.70.55"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
@@ -80,8 +80,8 @@ t0.ID=t1.PROFILE_ID
 				<textFieldExpression><![CDATA[$P{toDate}]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement x="4" y="3" width="50" height="50" uuid="2ac306eb-677c-4ed2-9252-c395a3924bd4"/>
-				<imageExpression><![CDATA["/img/Giga Tech Logo.png"]]></imageExpression>
+				<reportElement x="1" y="0" width="50" height="50" uuid="1ec78c8a-b764-427b-be43-c0473df8e4cc"/>
+				<imageExpression><![CDATA["src/main/resources/static/img/logo.png"]]></imageExpression>
 			</image>
 		</band>
 	</pageHeader>
