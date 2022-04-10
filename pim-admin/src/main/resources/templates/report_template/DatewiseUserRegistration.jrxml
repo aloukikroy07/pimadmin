@@ -55,11 +55,7 @@ t0.ID=t1.PROFILE_ID
 		<band splitType="Stretch"/>
 	</background>
 	<pageHeader>
-		<band height="76" splitType="Stretch">
-			<image>
-				<reportElement x="4" y="4" width="50" height="50" uuid="f06247e4-052c-4523-962d-3ec0e72e97df"/>
-				<imageExpression><![CDATA["C:/Users/User/Downloads/Giga Tech Logo.png"]]></imageExpression>
-			</image>
+		<band height="72" splitType="Stretch">
 			<staticText>
 				<reportElement x="173" y="5" width="207" height="21" uuid="fa7bc00c-4822-4b03-a841-f1b04027d588"/>
 				<textElement>
@@ -83,6 +79,10 @@ t0.ID=t1.PROFILE_ID
 				<reportElement x="419" y="41" width="100" height="19" uuid="a7e793ae-cf3e-4301-8621-19423405112c"/>
 				<textFieldExpression><![CDATA[$P{toDate}]]></textFieldExpression>
 			</textField>
+			<image>
+				<reportElement x="4" y="3" width="50" height="50" uuid="2ac306eb-677c-4ed2-9252-c395a3924bd4"/>
+				<imageExpression><![CDATA["/img/Giga Tech Logo.png"]]></imageExpression>
+			</image>
 		</band>
 	</pageHeader>
 	<columnHeader>

@@ -1,5 +1,6 @@
 package com.gigatechltd.pim.admin.services;
 
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,6 +14,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -57,7 +60,7 @@ public class ReportService {
 		try {
 			List<CustomerProfile> customerProfileDatoDateta = reportRepository.getCustomerProfile(request, cp);
 			//jrbcd = new JRBeanCollectionDataSource(customerProfileData);
-			template = ResourceUtils.getFile("classpath:/report_template/DatewiseUserRegistration.jrxml");
+			template = ResourceUtils.getFile("classpath:templates/report_template/DatewiseUserRegistration.jrxml");
 			JasperReport jasperReport = JasperCompileManager.compileReport(template.getAbsolutePath());
 			Map<String, Object> parameters = new HashMap<>();
 		    parameters.put("fromDate", fromDate);
