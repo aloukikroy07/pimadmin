@@ -109,11 +109,26 @@
             <version>RELEASE</version>
             <scope>compile</scope>
         </dependency>
-       <dependency>
+      <!--  <dependency>
            <groupId>org.slf4j</groupId>
            <artifactId>slf4j-api</artifactId>
            <version>1.7.35</version>
-       </dependency>
+       </dependency> -->
+       
+        <dependency> <!-- start for logger add these two dependency should and log4j2.xml file should add -->
+    		<groupId>org.springframework.boot</groupId>
+    		<artifactId>spring-boot-starter-log4j2</artifactId>
+  		</dependency>
+  		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+			<exclusions>
+      			<exclusion>
+       		 		<groupId>org.springframework.boot</groupId>
+        			<artifactId>spring-boot-starter-logging</artifactId>
+      			</exclusion>
+    		</exclusions>
+		</dependency><!-- end for logger add these two dependency should and log4j2.xml file should add -->
 		<dependency>
 		    <groupId>net.sf.jasperreports</groupId>
 		    <artifactId>jasperreports</artifactId>
