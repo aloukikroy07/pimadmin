@@ -41,7 +41,7 @@ public class ReportController {
 	
 	@PostMapping({"/datewise/trans/report/generate"})
 	public void generateDatewiseTransReport(HttpServletRequest request, HttpServletResponse response, CustomerProfile cp) throws IOException, ClassNotFoundException, SQLException {
-		reportService.exportJasperReport(request, response, cp);
+		reportService.generateJasperReport(request, response, cp);
 	}
 	
 	

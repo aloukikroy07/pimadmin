@@ -87,6 +87,48 @@ public class ReportService {
 		    
 		    Log.info("Customer Report Generated !");
 		    
+		} catch (FileNotFoundException | JRException ee) {
+			// TODO Auto-generated catch block
+			ee.printStackTrace();
+		}
+    }
+    
+	public void generateJasperReport(HttpServletRequest request, HttpServletResponse response, CustomerProfile cp) throws IOException {
+		JRBeanCollectionDataSource jrbcd = null;
+		File template;
+		String fromDate = request.getParameter("fromDate");
+		String toDate = request.getParameter("toDate");
+		
+		try {
+//				List<CustomerProfile> customerProfileData = reportRepository.getCustomerProfile(request, cp);
+//				jrbcd = new JRBeanCollectionDataSource(customerProfileData);
+			template = ResourceUtils.getFile("classpath:templates/report_template/DatewiseTransactionReport.jrxml");
+			JasperReport jasperReport = JasperCompileManager.compileReport(template.getAbsolutePath());
+			Map<String, Object> parameters = new HashMap<>();
+		    parameters.put("fromDate", fromDate);
+		    parameters.put("toDate",  toDate);
+		        
+//			    JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, jrbcd);
+//			    JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
+		    JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, getDataSource);
+		    
+		    JRPdfExporter pdfExporter = new JRPdfExporter();
+		    pdfExporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+		    ByteArrayOutputStream pdfReportStream = new ByteArrayOutputStream();
+		    pdfExporter.setExporterOutput(new SimpleOutputStreamExporterOutput(pdfReportStream));
+		    pdfExporter.exportReport();
+		    
+		    response.setContentType("application/pdf");
+		    response.setHeader("Content-Length", String.valueOf(pdfReportStream.size()));
+		    response.addHeader("Content-Disposition", "inline; filename=customer.pdf");
+		    
+		    ServletOutputStream responseOutputStream = response.getOutputStream();
+		    responseOutputStream.write(pdfReportStream.toByteArray());
+		    responseOutputStream.close();
+		    pdfReportStream.close();
+		    
+		    Log.info("Customer Report Generated !");
+		    
 		} catch (FileNotFoundException | JRException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
