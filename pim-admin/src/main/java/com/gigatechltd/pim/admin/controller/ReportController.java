@@ -24,14 +24,20 @@ public class ReportController {
 	@Autowired
 	ReportService reportService;
 	
+	Map<String, Object> map = new HashMap<>();
+	
 	@GetMapping({"/customer/report"})
 	public String openCustomerReportParameterWindow(Model model) {
 		return "report/customerRegistrantionReport";
 	}
 	
 	@PostMapping({"/customer/report/generate"})
-	public void generateCustomerReport(HttpServletRequest request, HttpServletResponse response, CustomerProfile cp) throws IOException, ClassNotFoundException, SQLException {
-		reportService.exportJasperReport(request, response, cp);
+	public void generateDatewiseCustomerReport(HttpServletRequest request, HttpServletResponse response, CustomerProfile cp) throws IOException, ClassNotFoundException, SQLException {
+		map.put("fileNameAndPath", "templates/report_template/DatewiseUserRegistration.jrxml");
+		map.put("fromDate", request.getParameter("fromDate"));
+		map.put("toDate",  request.getParameter("toDate"));
+		
+		reportService.generatePdfReport(map, response);
 	}
 	
 	@GetMapping({"/datewise/trans/report"})
@@ -40,8 +46,12 @@ public class ReportController {
 	}
 	
 	@PostMapping({"/datewise/trans/report/generate"})
-	public void generateDatewiseTransReport(HttpServletRequest request, HttpServletResponse response, CustomerProfile cp) throws IOException, ClassNotFoundException, SQLException {
-		reportService.generateJasperReport(request, response, cp);
+	public void generateDatewiseTransReport(HttpServletRequest request, HttpServletResponse response) throws IOException, ClassNotFoundException, SQLException {
+		map.put("fileNameAndPath", "templates/report_template/DatewiseTransactionReport.jrxml");
+		map.put("fromDate", request.getParameter("fromDate"));
+		map.put("toDate",  request.getParameter("toDate"));
+		
+		reportService.generatePdfReport(map, response);
 	}
 	
 	

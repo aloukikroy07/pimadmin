@@ -31,6 +31,6 @@ public class Application implements CommandLineRunner  {
     @Override
     @Transactional(readOnly = true)
     public void run(String... args) throws Exception {
-        System.out.println("PIM Project Started");
+        System.out.println("PIM Admin Started!");
     }
 }
