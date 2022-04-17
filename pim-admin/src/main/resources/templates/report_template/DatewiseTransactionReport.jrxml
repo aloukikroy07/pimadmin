@@ -173,7 +173,7 @@ from t_transactions tr join t_customer_profiles cp on cp.idtp_vid = tr.sender_id
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Times New Roman" size="11" isBold="true"/>
 								</textElement>
-								<text><![CDATA[Static Text]]></text>
+								<text><![CDATA[SL.]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="30">
