@@ -75,11 +75,11 @@ public class CompanyController {
 	}
 	
 	@GetMapping({"/company/unit"})
-	public String companyUnit(Model model, Model model1, CompanyUnitModel companyUnitModel){
+	public String companyUnit(Model model, CompanyUnitModel companyUnitModel){
 		long a = companyRepository.companyId();
 		model.addAttribute("companyUnits", companyRepository.getCompanyUnits(a));
 		model.addAttribute("companyUnitModel", companyUnitModel);
-		model1.addAttribute("businessUnit", companyRepository.businessUnitDropdown(a));
+		model.addAttribute("businessUnit", companyRepository.businessUnitDropdown(a));
 		return "company/company_unit";
 	}
 	
