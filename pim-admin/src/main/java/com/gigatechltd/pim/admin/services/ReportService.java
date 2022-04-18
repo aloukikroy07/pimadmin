@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
+import java.util.List;
 import java.util.Map;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -11,6 +12,8 @@ import org.jfree.util.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
+
+import com.gigatechltd.pim.admin.model.CustomerProfile;
 import com.gigatechltd.pim.admin.repository.ReportRepository;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -55,13 +58,14 @@ public class ReportService {
 		    Log.info(map.get("fileNameAndPath")+" Report Generated !");
 		    
 		} catch (FileNotFoundException | JRException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-	}
-
-
+    }
+    
+    public List<CustomerProfile> getCusProfile(){
+    	return reportRepository.getCustomerProfile();
+    }
 	
 	
 	

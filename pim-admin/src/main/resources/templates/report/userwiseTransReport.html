@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html layout:decorator="layout" lang="en" xmlns:layout="http://www.w3.org/1999/xhtml">
+	<head>
+	    <title>UserSwise Transaction Report</title>
+	    <script type="text/javascript" src="/js/custom.js"></script>
+	</head>
+	<body>
+		<section layout:fragment="content">
+		    <div class="pagetitle">
+		        <h1>Datewise Transaction Report</h1>
+		        <nav>
+		            <ol class="breadcrumb">
+		                <li class="breadcrumb-item"><a href="/"><i class="bi bi-house-door"></i></a></li>
+		                <li class="breadcrumb-item active">Userwise Transaction Report</li>
+		            </ol>
+		        </nav>
+		    </div><!-- End Page Title -->
+		
+		    <div>
+		    	<form method="post" th:object="${CustomerProfile}" th:action="@{/userwise/trans/report/generate}">
+				  <div class="form-group">
+				  	<div>
+				  		<select class="form-select" id="cpId" name="cpId" aria-label="State">
+				  		   <option value="" selected disabled>---Select User---</option>
+						   <option th:each="cp:${customerProfileName}" th:text="${cp.customerName}" th:value="${cp.id}"></option>
+						</select>
+				  	</div>
+				  	<div>
+				  		<label for="exampleInputEmail1">From</label>
+				    	<input type="date" class="form-control" id="fromDate" aria-describedby="emailHelp" name="fromDate">
+				  	</div>
+				  	<div>
+				  		<label for="exampleInputEmail1">To</label>
+				    	<input type="date" class="form-control" id="toDate" aria-describedby="emailHelp" name="toDate">
+				  	</div>
+				  </div>
+				  <button type="submit" class="btn btn-primary" >Generate Report</button>
+				</form>
+		    </div>
+		</section>
+	</body>
+</html>
