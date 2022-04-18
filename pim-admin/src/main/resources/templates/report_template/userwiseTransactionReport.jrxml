@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.8.0.final using JasperReports Library version 6.8.0-2ed8dfabb690ff337a5797129f2cd92902b0c87b  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Datewise User Registration" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6a5834a2-1786-481a-8d06-4a8d421257b9">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Datewise User Registration" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6a5834a2-1786-481a-8d06-4a8d421257b9">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="OracleDB55DataAdapter "/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
@@ -35,10 +35,12 @@
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="OracleDB55DataAdapter "/>
 		<parameter name="fromDate" class="java.lang.String"/>
 		<parameter name="toDate" class="java.lang.String"/>
+		<parameter name="customerProfileId" class="java.lang.Integer"/>
 		<queryString language="SQL">
 			<![CDATA[select tr.idtp_ref_no, tr.sending_bank_ref_no, tr.sender_idtp_vid, cp.customer_name, tr.receiving_bank_ref_no, tr.receiver_idtp_vid, tr.trans_amt, tr.api_success 
 from t_transactions tr join t_customer_profiles cp on cp.idtp_vid = tr.sender_idtp_vid 
- where to_char(tr.created_at,'YYYY-MM-DD')>= $P{fromDate} and to_char(tr.created_at,'YYYY-MM-DD')<= $P{toDate}]]>
+where to_char(tr.created_at,'YYYY-MM-DD')>= $P{fromDate} and to_char(tr.created_at,'YYYY-MM-DD')<= $P{toDate} 
+and cp.id = NVL($P{customerProfileId}, cp.id)]]>
 		</queryString>
 		<field name="IDTP_REF_NO" class="java.lang.String">
 			<property name="com.jaspersoft.studio.field.label" value="IDTP_REF_NO"/>
@@ -67,10 +69,12 @@ from t_transactions tr join t_customer_profiles cp on cp.idtp_vid = tr.sender_id
 	</subDataset>
 	<parameter name="fromDate" class="java.lang.String"/>
 	<parameter name="toDate" class="java.lang.String"/>
+	<parameter name="customerProfileId" class="java.lang.Integer"/>
 	<queryString>
 		<![CDATA[select tr.idtp_ref_no, tr.sending_bank_ref_no, tr.sender_idtp_vid, cp.customer_name, tr.receiving_bank_ref_no, tr.receiver_idtp_vid, tr.trans_amt, tr.api_success 
 from t_transactions tr join t_customer_profiles cp on cp.idtp_vid = tr.sender_idtp_vid 
- where to_char(tr.created_at,'YYYY-MM-DD')>= $P{fromDate} and to_char(tr.created_at,'YYYY-MM-DD')<= $P{toDate}]]>
+where to_char(tr.created_at,'YYYY-MM-DD')>= $P{fromDate} and to_char(tr.created_at,'YYYY-MM-DD')<= $P{toDate} 
+and cp.id = NVL($P{customerProfileId}, cp.id)]]>
 	</queryString>
 	<field name="IDTP_REF_NO" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="IDTP_REF_NO"/>
@@ -138,9 +142,9 @@ from t_transactions tr join t_customer_profiles cp on cp.idtp_vid = tr.sender_id
 		</band>
 	</pageHeader>
 	<detail>
-		<band height="61" splitType="Stretch">
+		<band height="60" splitType="Stretch">
 			<componentElement>
-				<reportElement style="Table_TH" stretchType="RelativeToTallestObject" isPrintRepeatedValues="false" x="-8" y="1" width="571" height="60" uuid="ffd2fc8e-c8c2-4b5d-bcdc-068851c1380f">
+				<reportElement stretchType="RelativeToTallestObject" isPrintRepeatedValues="false" x="-8" y="1" width="571" height="59" isRemoveLineWhenBlank="true" uuid="ffd2fc8e-c8c2-4b5d-bcdc-068851c1380f">
 					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
 					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
@@ -149,13 +153,16 @@ from t_transactions tr join t_customer_profiles cp on cp.idtp_vid = tr.sender_id
 					<property name="com.jaspersoft.studio.components.autoresize.next" value="true"/>
 					<printWhenExpression><![CDATA[$V{REPORT_COUNT}==1]]></printWhenExpression>
 				</reportElement>
-				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="Blank">
 					<datasetRun subDataset="TransactionDS" uuid="c999393d-bba7-4108-b630-dbcbb361a669">
 						<datasetParameter name="fromDate">
 							<datasetParameterExpression><![CDATA[$P{fromDate}]]></datasetParameterExpression>
 						</datasetParameter>
 						<datasetParameter name="toDate">
 							<datasetParameterExpression><![CDATA[$P{toDate}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="customerProfileId">
+							<datasetParameterExpression><![CDATA[$P{customerProfileId}]]></datasetParameterExpression>
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
@@ -443,4 +450,15 @@ from t_transactions tr join t_customer_profiles cp on cp.idtp_vid = tr.sender_id
 			</textField>
 		</band>
 	</pageFooter>
+	<noData>
+		<band height="50">
+			<textField>
+				<reportElement x="1" y="14" width="544" height="30" forecolor="#F51511" uuid="ac67849f-ffad-4ece-8ecc-83d088b76d46"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Data not found with selected criteria. Please change criteria and try again."]]></textFieldExpression>
+			</textField>
+		</band>
+	</noData>
 </jasperReport>

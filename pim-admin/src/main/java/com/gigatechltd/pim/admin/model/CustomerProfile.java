@@ -19,6 +19,7 @@ public class CustomerProfile {
 	private String tinNo;
 	private String password;
 	private String idtpPin;
+	private String idtpVid;
 	private String appPassword;
 	private String finName;
 	private String primaryAccountNo;
@@ -316,6 +317,14 @@ public class CustomerProfile {
 
 	public void setUpdatedAt(Timestamp updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	public String getIdtpVid() {
+		return idtpVid;
+	}
+
+	public void setIdtpVid(String idtpVid) {
+		this.idtpVid = idtpVid;
 	}
 	
 	
