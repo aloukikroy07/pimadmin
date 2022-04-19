@@ -115,19 +115,18 @@ public class CompanyController {
 	@ResponseBody
 	public Map<Long, String> getParentBusinessUnit(@RequestParam String businessUnit) {
 		String businessUnitHierarchy = companyRepository.getHierarchy(businessUnit);
-		if(businessUnitHierarchy.equals("1")) {
-			Map<Long, String> map = companyRepository.parentFromBusinessUnit();
-			return map;
+//		if(businessUnitHierarchy.equals("1")) {
+//			Map<Long, String> map = companyRepository.parentFromBusinessUnit();
+//			return map;
+//		}
+			//long a = companyRepository.companyId();
+			//List <BusinessUnitModel>  parentBusinessUnit=companyRepository.businessUnitDropdown(a);
+		List <BusinessUnitModel>  parentBusinessUnit=companyRepository.parentBusinessUnitDropdown(businessUnitHierarchy);
+		Map<Long, String> map=new HashMap<Long, String>();
+		for(int i=0; i<parentBusinessUnit.size(); i++) {
+			map.put(parentBusinessUnit.get(i).getId(), parentBusinessUnit.get(i).getUnitName());
 		}
-		else {
-			long a = companyRepository.companyId();
-			List <BusinessUnitModel>  parentBusinessUnit=companyRepository.businessUnitDropdown(a);
-			Map<Long, String> map=new HashMap<Long, String>();
-			for(int i=0; i<parentBusinessUnit.size(); i++) {
-				map.put(parentBusinessUnit.get(i).getId(), parentBusinessUnit.get(i).getUnitName());
-			}
-			return map;
-		}		
+		return map;		
 	}
 	
 	@PostMapping({"/company/changeStatus"})

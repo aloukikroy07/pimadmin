@@ -60,6 +60,12 @@ public class CompanyRepository {
 		return businessUnits;
 	}
 	
+	public List<BusinessUnitModel> parentBusinessUnitDropdown(String businessUnit){
+		String sql = "select id, unit_name as unitName from t_business_units where company_Id= '"+companyId()+"' and status= '1' and hierarchy<= '"+businessUnit+"'";
+		List<BusinessUnitModel> businessUnits= jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(BusinessUnitModel.class));
+		return businessUnits;
+	}
+	
 	public List<CompanyUnitModel> getCompanyUnits(long companyId){
 		String sql = "select t0.id, t0.name, t1.name as companyName, t2.unit_name as businessUnitName, t0.parent_id,\r\n" + 
 				"(case\r\n" + 
